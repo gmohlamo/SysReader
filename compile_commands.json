@@ -1,0 +1,15 @@
+[
+ {
+  "directory": "/app/plugin",
+  "arguments": [
+   "cc",
+   "-I/usr/local/include/libr",
+   "-fPIC",
+   "-c",
+   "-o",
+   "src/readsys.o",
+   "src/readsys.c"
+  ],
+  "file": "src/readsys.c"
+ }
+]
