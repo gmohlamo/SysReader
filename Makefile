@@ -5,6 +5,7 @@ R2_USER_PLUGINS=$(shell r2 -HR2_USER_PLUGINS)
 
 CORE_HELLO=src/readsys.$(LIBEXT)
 OBJS=src/readsys.o
+JSON_DATA=data/syscalls.json
 
 all: $(CORE_HELLO)
 
@@ -17,6 +18,8 @@ clean:
 user-install install:
 	mkdir -p $(R2_USER_PLUGINS)
 	cp -f $(CORE_HELLO) $(R2_USER_PLUGINS)
+	cp -f $(JSON_DATA) $(R2_USER_PLUGINS)/
 
 user-uninstall uninstall:
 	rm -f $(R2_USER_PLUGINS)/$(CORE_HELLO)
+	rm -f $(R2_USER_PLUGINS)/syscalls.json

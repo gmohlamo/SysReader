@@ -10,3 +10,8 @@ lib = library('readsys', sources,
 	install_dir: r2_plugdir,
 	install: true
 )
+
+# Install the JSON file into the exact same plugin directory
+install_data('data/syscalls.json',
+	install_dir: r2_plugdir
+)

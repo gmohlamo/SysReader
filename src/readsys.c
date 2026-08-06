@@ -7,6 +7,7 @@
 
 #include <r_core.h>
 #include <r_syscall.h>
+#include <r_util.h>
 
 #define MAX_STRING_PREVIEW 32
 
@@ -48,11 +49,18 @@ static const char *help_msg_p[] = {
 //  	-x --> flags (R10)
 //  	-i --> fd (R8)
 //  	-i --> pgoff (R9)
+typedef struct flag_entry {
+  char *name;
+  uint64_t value;
+  struct flag_entry *next;
+} flag_entry;
+
 typedef struct {
   unsigned int pos;
   char type;
   char *name;
   uint64_t value;
+  flag_entry *flags; // Pointer to parsed flags for this argument
   void *next;
 } argument;
 
@@ -60,6 +68,50 @@ typedef struct {
   size_t length;
   argument *args;
 } args;
+
+void print_flag_details(RCore *core, uint64_t value, flag_entry *flags) {
+  if (!flags) {
+    r_cons_printf(core->cons, "0x%lx", value);
+    return;
+  }
+
+  r_cons_printf(core->cons, "0x%lx (", value);
+  int first = 1;
+
+  // Handle exact 0 matches (e.g., PROT_NONE = 0, O_RDONLY = 0)
+  if (value == 0) {
+    flag_entry *curr = flags;
+    while (curr != NULL) {
+      if (curr->value == 0) {
+        r_cons_printf(core->cons, "%s", curr->name);
+        first = 0;
+        break;
+      }
+      curr = curr->next;
+    }
+  }
+
+  // Evaluate bitwise and exclusive flags
+  flag_entry *curr = flags;
+  while (curr != NULL) {
+    if (curr->value != 0) {
+      // Check if the flag bit(s) are set
+      if ((value & curr->value) == curr->value) {
+        if (!first) {
+          r_cons_printf(core->cons, " | ");
+        }
+        r_cons_printf(core->cons, "%s", curr->name);
+        first = 0;
+      }
+    }
+    curr = curr->next;
+  }
+
+  if (first && value != 0) {
+    r_cons_printf(core->cons, "UNKNOWN");
+  }
+  r_cons_printf(core->cons, ")");
+}
 
 // since we are directly allocating memory, we should free it up too
 char *remove_newline(char *str) {
@@ -189,7 +241,7 @@ void iterate_argument_string(RCore *core, size_t arg_count, char *arg_str) {
   free(format);
 }
 
-void print_arguments(RCore *core, const char *arg_str) {
+void break_argument_string(RCore *core, const char *arg_str) {
   // copy string
   char *arg_cpy = strdup(arg_str);
   // split by comma
@@ -220,7 +272,7 @@ void find_syscall(RCore *core, RRegItem *reg_item) {
   const char *arguments = r_core_cmd_strf(core, "ask %s", dup_name);
   r_cons_printf(core->cons, "Call Name: %s\n", dup_name);
   free(dup_name);
-  print_arguments(core, arguments);
+  break_argument_string(core, arguments);
   // for arguments, we should parse the arguments output
   // let's first handle the register arguments
 }
