@@ -4,7 +4,7 @@ When reverse engineering Linux malware, a painful part of the job is figuring ou
 * an internet connection
 * a local LLM to help with reversing
 
-The program is rather simple despite being in its early stages. At the moment, when encountering a syscall, it will read the value of RAX and pass that to Radare's own `ask` command to get the syscall name and argument paramters. The plugin then parses each argument, which fortunately, is limited to a subset of ![predefined registers](https://kernel-internals.org/arch/x86/syscall-entry/).
+The program is rather simple despite being in its early stages. At the moment, when encountering a syscall, it will read the value of RAX and pass that to Radare's own `ask` command to get the syscall name and argument paramters. The plugin then parses each argument, which fortunately, is limited to a subset of [predefined registers](https://kernel-internals.org/arch/x86/syscall-entry/).
 
 An example of the plugin in action is shown below:
 ![](imgs/image_1786433163.png)
