@@ -11,7 +11,9 @@ class SyscallDatabaseBuilder:
         self.header_paths = [
             "/usr/include/linux/mman.h",
             "/usr/include/asm-generic/mman.h",
+            "/usr/include/asm-generic/mman-common.h",
             "/usr/include/x86_64-linux-gnu/bits/mman-linux.h",
+            "/usr/include/x86_64-linux-gnu/bits/mman-map-flags-generic.h",
             "/usr/include/linux/sched.h",
             "/usr/include/linux/fcntl.h",
             "/usr/include/fcntl.h",
