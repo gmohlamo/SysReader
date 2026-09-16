@@ -7,9 +7,22 @@
    "-fPIC",
    "-c",
    "-o",
-   "src/readsys.o",
-   "src/readsys.c"
+   "src/sysreader.o",
+   "src/sysreader.c"
   ],
-  "file": "src/readsys.c"
+  "file": "src/sysreader.c"
+ },
+ {
+  "directory": "/app/plugin",
+  "arguments": [
+   "cc",
+   "-I/usr/local/include/libr",
+   "-fPIC",
+   "-c",
+   "-o",
+   "src/iterate_args.o",
+   "src/iterate_args.c"
+  ],
+  "file": "src/iterate_args.c"
  }
 ]

@@ -2,7 +2,8 @@ project('readsys', 'c', license : 'MIT', meson_version : '>=1.00', version : '0.
 
 r2_plugdir = run_command('r2', '-H', 'R2_USER_PLUGINS', check: true).stdout().strip()
 
-sources = [ 'src/readsys.c' ]
+sources = [ 'src/sysreader.c', 'src/iterate_args.c' ]
+inc_dir = include_directories('include')
 lib = library('readsys', sources,
 	dependencies : [
 		dependency('r_core')
