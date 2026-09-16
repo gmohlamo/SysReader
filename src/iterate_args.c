@@ -72,11 +72,14 @@ void iterate_argument_string(RCore *core, const RJson *db_json,
       if (list_itr->flags != NULL) {
         print_flag_details(core, list_itr->value, list_itr->flags);
       } else {
+        r_cons_printf(core->cons, "0x%" PRIx64, list_itr->value);
+        /*
         if (list_itr->type == 'x') {
           r_cons_printf(core->cons, "0x%" PRIx64, list_itr->value);
         } else {
           r_cons_printf(core->cons, "%" PRId64, (int64_t)list_itr->value);
         }
+        */
       }
       break;
     case 'p':

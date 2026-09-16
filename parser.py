@@ -27,7 +27,8 @@ class SyscallDatabaseBuilder:
             "/usr/include/unistd.h",
             "/usr/include/x86_64-linux-gnu/asm/unistd.h",
             "/usr/include/x86_64-linux-gnu/bits/unistd.h",
-            "/usr/include/x86_64-linux-gnu/sys/unistd.h"
+            "/usr/include/x86_64-linux-gnu/sys/unistd.h",
+            "/usr/include/x86_64-linux-gnu/asm/signal.h"
         ]
         
         # Mapping rules: Which macro prefixes belong to which syscall and argument name
@@ -40,12 +41,12 @@ class SyscallDatabaseBuilder:
                 "flags": ["MREMAP_"]
             },
             "clone": {
-                "flags": ["CLONE_"]
+                "flags": ["CLONE_", "SIG"]
             },
             "clone3": {
                 # Maps directly to the struct field inside clone_args
                 "struct_fields": {
-                    "flags": ["CLONE_"]
+                    "flags": ["CLONE_", "SIG"]
                 }
             },
             "open": {

@@ -58,7 +58,7 @@ void print_flag_details(RCore *core, uint64_t value, flag_entry *flags);
 void argument_detail(RCore *core, argument *arg);
 char *read_string_from_target(RCore *core, uint64_t addr, size_t max_len);
 void find_syscall(RCore *core, int callnum);
-bool addSymbolComments(RCorePluginSession *cps, const char *input);
+bool is_syscall(RCorePluginSession *cps, const char *input);
 bool read_sys_call(RCorePluginSession *cps, const char *input);
 
 #endif

@@ -74,98 +74,6 @@ RJson *load_syscall_db(void) {
   return root;
 }
 
-flag_entry *get_flags_for_arg(const RJson *root, const char *syscall_name,
-                              int param_index) {
-  if (!root || !syscall_name) {
-    return NULL;
-  }
-
-  const RJson *sc_node = r_json_get(root, syscall_name);
-  if (!sc_node) {
-    return NULL;
-  }
-
-  const RJson *args_node = r_json_get(sc_node, "arguments");
-  if (!args_node) {
-    return NULL;
-  }
-
-  char param_idx_str[16];
-  snprintf(param_idx_str, sizeof(param_idx_str), "%d", param_index);
-
-  const RJson *arg_node = r_json_get(args_node, param_idx_str);
-  if (!arg_node) {
-    return NULL;
-  }
-
-  const RJson *flags_node = r_json_get(arg_node, "flags");
-  if (!flags_node || flags_node->type != R_JSON_OBJECT) {
-    return NULL;
-  }
-
-  flag_entry *head_flag = NULL;
-  const RJson *item;
-  for (item = flags_node->children.first; item; item = item->next) {
-    if (!item->key) {
-      continue;
-    }
-    flag_entry *new_flag = malloc(sizeof(flag_entry));
-    if (!new_flag) {
-      break;
-    }
-    new_flag->name = strdup(item->key);
-    new_flag->value = (uint64_t)item->num.u_value;
-    new_flag->next = head_flag;
-    head_flag = new_flag;
-  }
-
-  return head_flag;
-}
-
-void print_flag_details(RCore *core, uint64_t value, flag_entry *flags) {
-  if (!flags) {
-    r_cons_printf(core->cons, "0x%" PRIx64, value);
-    return;
-  }
-
-  r_cons_printf(core->cons, "0x%" PRIx64 " (", value);
-  int first = 1;
-
-  // Handle exact 0 matches (e.g., PROT_NONE = 0, O_RDONLY = 0)
-  if (value == 0) {
-    flag_entry *curr = flags;
-    while (curr != NULL) {
-      if (curr->value == 0) {
-        r_cons_printf(core->cons, "%s", curr->name);
-        first = 0;
-        break;
-      }
-      curr = curr->next;
-    }
-  }
-
-  // Evaluate bitwise and exclusive flags
-  flag_entry *curr = flags;
-  while (curr != NULL) {
-    if (curr->value != 0) {
-      // Check if the flag bit(s) are set
-      if ((value & curr->value) == curr->value) {
-        if (!first) {
-          r_cons_printf(core->cons, " | ");
-        }
-        r_cons_printf(core->cons, "%s", curr->name);
-        first = 0;
-      }
-    }
-    curr = curr->next;
-  }
-
-  if (first && value != 0) {
-    r_cons_printf(core->cons, "UNKNOWN");
-  }
-  r_cons_printf(core->cons, ")");
-}
-
 void argument_detail(RCore *core, argument *arg) {
   if (!core || !core->anal || !core->anal->reg || !arg) {
     return;
@@ -231,8 +139,7 @@ void find_syscall(RCore *core, int callnum) {
   r_syscall_item_free(si);
 }
 
-// probably need to rename this... return value might be useless
-bool addSymbolComments(RCorePluginSession *cps, const char *input) {
+bool is_syscall(RCorePluginSession *cps, const char *input) {
   if (!cps || !cps->core) {
     return false;
   }
@@ -292,7 +199,7 @@ bool read_sys_call(RCorePluginSession *cps, const char *input) {
                           R_CORE_AUTOCMPLT_DFLT, true);
   RCore *core = cps->core;
   if (r_str_eq(input, "psy")) {
-    return addSymbolComments(cps, input);
+    return is_syscall(cps, input);
   } else if (r_str_eq(input, "ps?")) {
     r_core_cmd_help(core, help_msg_p);
     return false;

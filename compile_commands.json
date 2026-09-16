@@ -24,5 +24,18 @@
    "src/iterate_args.c"
   ],
   "file": "src/iterate_args.c"
+ },
+ {
+  "directory": "/app/plugin",
+  "arguments": [
+   "cc",
+   "-I/usr/local/include/libr",
+   "-fPIC",
+   "-c",
+   "-o",
+   "src/flags.o",
+   "src/flags.c"
+  ],
+  "file": "src/flags.c"
  }
 ]
