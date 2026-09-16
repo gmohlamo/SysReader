@@ -213,13 +213,8 @@ void find_syscall(RCore *core, int callnum) {
   }
 
   RSyscallItem *si;
-  if (callnum > 0 && callnum < 0xFFFF) {
+  if (callnum > 0 && callnum < 0xFFFF)
     si = r_syscall_get(core->anal->syscall, callnum, -1);
-    if (si) {
-      r_cons_printf(core->cons, "syscall.%s: %d %s\n", si->name, si->args,
-                    si->sargs);
-    }
-  }
 
   const char *arguments_raw = r_core_cmd_strf(core, "ask %s", si->name);
   r_cons_printf(core->cons, "%s( ", si->name);
@@ -233,8 +228,10 @@ void find_syscall(RCore *core, int callnum) {
     }
     free((void *)arguments_raw);
   }
+  r_syscall_item_free(si);
 }
 
+// probably need to rename this... return value might be useless
 bool addSymbolComments(RCorePluginSession *cps, const char *input) {
   if (!cps || !cps->core) {
     return false;

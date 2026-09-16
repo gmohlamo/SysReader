@@ -3,7 +3,6 @@
 #ifndef SYSREADER_H
 #define SYSREADER_H
 
-#include <ctype.h>
 #include <inttypes.h>
 #include <stddef.h>
 #include <stdlib.h>

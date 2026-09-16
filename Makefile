@@ -17,9 +17,9 @@ clean:
 
 user-install install:
 	mkdir -p $(R2_USER_PLUGINS)
-	cp -f $(CORE_HELLO) $(R2_USER_PLUGINS)
+	cp -f $(CORE_HELLO) $(R2_USER_PLUGINS)/
 	cp -f $(JSON_DATA) $(R2_USER_PLUGINS)/
 
 user-uninstall uninstall:
-	rm -f $(R2_USER_PLUGINS)/$(CORE_HELLO)
+	rm -f $(R2_USER_PLUGINS)/$(notdir $(CORE_HELLO))
 	rm -f $(R2_USER_PLUGINS)/syscalls.json
