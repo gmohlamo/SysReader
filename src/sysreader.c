@@ -124,17 +124,12 @@ void find_syscall(RCore *core, int callnum) {
   if (callnum > 0 && callnum < 0xFFFF)
     si = r_syscall_get(core->anal->syscall, callnum, -1);
 
-  const char *arguments_raw = r_core_cmd_strf(core, "ask %s", si->name);
   r_cons_printf(core->cons, "%s( ", si->name);
 
-  if (arguments_raw) {
-    RJson *db_json = load_syscall_db();
-    iterate_argument_string(core, db_json, si->name, (size_t)si->args,
-                            si->sargs);
-    if (db_json) {
-      r_json_free(db_json);
-    }
-    free((void *)arguments_raw);
+  RJson *db_json = load_syscall_db();
+  iterate_argument_string(core, db_json, si->name, (size_t)si->args, si->sargs);
+  if (db_json) {
+    r_json_free(db_json);
   }
   r_syscall_item_free(si);
 }
