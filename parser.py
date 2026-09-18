@@ -33,12 +33,19 @@ class SyscallDatabaseBuilder:
         
         # Mapping rules: Which macro prefixes belong to which syscall and argument name
         self.prefix_routing = {
+            "open": {
+                "flags": ["O_"],
+                "mode": ["S_I"],
+            },
             "mmap": {
                 "prot": ["PROT_"],
                 "flags": ["MAP_"]
             },
             "mremap": {
                 "flags": ["MREMAP_"]
+            },
+            "msync": {
+                "flags": ["MS_"]
             },
             "clone": {
                 "flags": ["CLONE_", "SIG"]
@@ -99,7 +106,7 @@ class SyscallDatabaseBuilder:
                 for match in macro_pattern.finditer(content):
                     name, val_str = match.groups()
                     try:
-                        self.constants[name] = self.parse_c_int(val_str) # <-- CHANGE THIS LINE
+                        self.constants[name] = self.parse_c_int(val_str)
                     except ValueError:
                         if val_str in self.constants:
                             self.constants[name] = self.constants[val_str]
@@ -119,11 +126,19 @@ class SyscallDatabaseBuilder:
                         self.structs[s_name] = fields
 
     def build_database(self):
-        """Builds the structured syscall database using prefix routing rules."""
+        # Builds syscall database
         self.scan_headers()
 
         # Skeleton of target system calls with basic structural positions
         database = {
+            "open": {
+                "args": 3,
+                "arguments": {
+                    "0": {"name": "filename", "type": "const char *", "param_index": 0},
+                    "1": {"name": "flags", "type": "int", "param_index": 1},
+                    "2": {"name": "mode", "type": "umode_t", "param_index": 2},
+                }
+            },
             "mmap": {
                 "args": 6,
                 "arguments": {
@@ -135,6 +150,12 @@ class SyscallDatabaseBuilder:
                 "args": 5,
                 "arguments": {
                     "3": {"name": "flags", "type": "int", "param_index": 3}
+                }
+            },
+            "msync": {
+                "args": 3,
+                "arguments": {
+                    "2": {"name": "flags", "type": "int", "param_index": 2}
                 }
             },
             "clone": {
