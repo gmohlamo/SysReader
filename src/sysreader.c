@@ -1,19 +1,81 @@
 #include "../include/readsys.h"
 
-// x86-64 syscall convention: first 6 args in registers
-// Index 0 = arg 1, Index 1 = arg 2, etc.
-const char *syscall_regs[] = {
-    "rdi", // arg 1
-    "rsi", // arg 2
-    "rdx", // arg 3
-    "r10", // arg 4 (note: r10 for syscalls, NOT rcx)
-    "r8",  // arg 5
-    "r9"   // arg 6
+static const SyscallConvention conv_x86_64 = {
+    .name = "x86-64",
+    .syscall_reg = "rax",
+    .alt_syscall_reg = "eax",
+    .arg_regs = {"rdi", "rsi", "rdx", "r10", "r8", "r9"}
 };
 
+static const SyscallConvention conv_x86_32 = {
+    .name = "x86-32",
+    .syscall_reg = "eax",
+    .alt_syscall_reg = NULL,
+    .arg_regs = {"ebx", "ecx", "edx", "esi", "edi", "ebp"}
+};
+
+static const SyscallConvention conv_arm64 = {
+    .name = "arm64",
+    .syscall_reg = "x8",
+    .alt_syscall_reg = "w8",
+    .arg_regs = {"x0", "x1", "x2", "x3", "x4", "x5"}
+};
+
+static const SyscallConvention conv_arm32 = {
+    .name = "arm32",
+    .syscall_reg = "r7",
+    .alt_syscall_reg = NULL,
+    .arg_regs = {"r0", "r1", "r2", "r3", "r4", "r5"}
+};
+
+const SyscallConvention *get_syscall_convention(RCore *core) {
+  if (!core) {
+    return &conv_x86_64;
+  }
+
+  const char *arch = r_config_get(core->config, "asm.arch");
+  int bits = (int)r_config_get_i(core->config, "asm.bits");
+
+  if (!arch || !*arch) {
+    arch = "x86";
+  }
+
+  if (r_str_startswith(arch, "arm") || r_str_startswith(arch, "aarch")) {
+    if (bits == 64 || r_str_eq(arch, "aarch64") || r_str_eq(arch, "arm64")) {
+      return &conv_arm64;
+    }
+    return &conv_arm32;
+  }
+
+  if (r_str_eq(arch, "x86") || r_str_eq(arch, "i386")) {
+    if (bits == 32) {
+      return &conv_x86_32;
+    }
+    return &conv_x86_64;
+  }
+
+  // Fallback by probing registers in the active register profile
+  if (core->anal && core->anal->reg) {
+    if (r_reg_get(core->anal->reg, "x8", -1) != NULL) {
+      return &conv_arm64;
+    }
+    if (r_reg_get(core->anal->reg, "r7", -1) != NULL && r_reg_get(core->anal->reg, "x0", -1) == NULL) {
+      return &conv_arm32;
+    }
+    if (r_reg_get(core->anal->reg, "rax", -1) != NULL) {
+      return &conv_x86_64;
+    }
+    if (r_reg_get(core->anal->reg, "eax", -1) != NULL) {
+      return &conv_x86_32;
+    }
+  }
+
+  return (bits == 32) ? &conv_x86_32 : &conv_x86_64;
+}
+
 const char *help_msg_p[] = {
-    "psy", "",
-    "If rip is on a systemcall, add function call and arguments as comment",
+    "psy", "", "Print syscall name, arguments, and decoded flags",
+    "psyc", "", "Print and add syscall call and arguments as comment at PC",
     NULL};
 
 char *remove_newline(const char *str) {
@@ -31,6 +93,7 @@ void free_flags(flag_entry *flags) {
   while (flags) {
     flag_entry *next = flags->next;
     free(flags->name);
+    free(flags->desc);
     free(flags);
     flags = next;
   }
@@ -45,6 +108,7 @@ void free_args(args *arg_head) {
     argument *next = curr->next;
     free(curr->name);
     free_flags(curr->flags);
+    free_flags(curr->signals);
     free(curr);
     curr = next;
   }
@@ -78,13 +142,38 @@ void argument_detail(RCore *core, argument *arg) {
   if (!core || !core->anal || !core->anal->reg || !arg) {
     return;
   }
+  const SyscallConvention *conv = get_syscall_convention(core);
+  if (!conv) {
+    return;
+  }
   if (arg->pos >= 1 && arg->pos <= SYSCALL_REG_COUNT) {
-    const char *reg_name = syscall_regs[arg->pos - 1];
-    RRegItem *item = r_reg_get(core->anal->reg, reg_name, -1);
-    if (item) {
-      arg->value = r_reg_get_value(core->anal->reg, item);
+    const char *reg_name = conv->arg_regs[arg->pos - 1];
+    if (reg_name) {
+      RRegItem *item = r_reg_get(core->anal->reg, reg_name, -1);
+      if (item) {
+        arg->value = r_reg_get_value(core->anal->reg, item);
+      }
     }
   }
+}
+
+static bool is_syscall_instruction(const RAnalOp *op) {
+  if (!op) {
+    return false;
+  }
+  if (op->type == R_ANAL_OP_TYPE_SWI) {
+    return true;
+  }
+  if (op->mnemonic) {
+    if (r_str_startswith(op->mnemonic, "syscall") ||
+        r_str_startswith(op->mnemonic, "sysenter") ||
+        r_str_startswith(op->mnemonic, "svc") ||
+        r_str_startswith(op->mnemonic, "swi") ||
+        r_str_startswith(op->mnemonic, "int")) {
+      return true;
+    }
+  }
+  return false;
 }
 
 /**
@@ -115,26 +204,49 @@ char *read_string_from_target(RCore *core, uint64_t addr, size_t max_len) {
   return buffer;
 }
 
-void find_syscall(RCore *core, int callnum) {
+void find_syscall(RCore *core, int callnum, ut64 current_addr, bool add_comment) {
   if (!core) {
     return;
   }
 
-  RSyscallItem *si;
-  if (callnum > 0 && callnum < 0xFFFF)
+  RSyscallItem *si = NULL;
+  if (callnum >= 0 && callnum < 0xFFFF) {
     si = r_syscall_get(core->anal->syscall, callnum, -1);
+  }
 
-  r_cons_printf(core->cons, "%s( ", si->name);
+  if (!si) {
+    r_cons_printf(core->cons, "syscall_%d();\n", callnum);
+    if (add_comment) {
+      char tmp[64];
+      snprintf(tmp, sizeof(tmp), "syscall_%d();", callnum);
+      r_meta_set_string(core->anal, R_META_TYPE_COMMENT, current_addr, tmp);
+      r_cons_printf(core->cons, "Added comment at 0x%08" PFMT64x "\n", current_addr);
+    }
+    return;
+  }
+
+  RStrBuf *sb = r_strbuf_new("");
+  r_strbuf_appendf(sb, "%s( ", si->name);
 
   RJson *db_json = load_syscall_db();
-  iterate_argument_string(core, db_json, si->name, (size_t)si->args, si->sargs);
+  iterate_argument_string(core, sb, db_json, si->name, (size_t)si->args, si->sargs);
   if (db_json) {
     r_json_free(db_json);
   }
   r_syscall_item_free(si);
+
+  char *call_str = r_strbuf_drain(sb);
+  if (call_str) {
+    r_cons_printf(core->cons, "%s\n", call_str);
+    if (add_comment) {
+      r_meta_set_string(core->anal, R_META_TYPE_COMMENT, current_addr, call_str);
+      r_cons_printf(core->cons, "Added comment at 0x%08" PFMT64x "\n", current_addr);
+    }
+    free(call_str);
+  }
 }
 
-bool is_syscall(RCorePluginSession *cps, const char *input) {
+bool is_syscall(RCorePluginSession *cps, bool add_comment) {
   if (!cps || !cps->core) {
     return false;
   }
@@ -155,9 +267,7 @@ bool is_syscall(RCorePluginSession *cps, const char *input) {
                       R_ARCH_OP_MASK_DISASM);
 
   if (ret > 0) {
-    if (!r_str_eq(op.mnemonic, "syscall") &&
-        !r_str_eq(op.mnemonic, "int 0x80") &&
-        !r_str_eq(op.mnemonic, "sysenter")) {
+    if (!is_syscall_instruction(&op)) {
       r_cons_printf(core->cons, "Place holder for something smarter\n");
       r_anal_op_fini(&op);
       r_cons_flush(core->cons);
@@ -172,14 +282,33 @@ bool is_syscall(RCorePluginSession *cps, const char *input) {
     return false;
   }
 
-  // need to change this to get the digit directly, rest of this is useless for
-  // me. The problem is getting this to be somewhat architecture agnostic
-  // "SN" doesn't work, we'll need to make another function
-  ut64 syscall_number = r_reg_getv(core->anal->reg, "rax");
-  if (syscall_number)
-    find_syscall(core, (int)syscall_number);
-  else
-    r_cons_printf(core->cons, "Could not find syscall numnber register\n");
+  const SyscallConvention *conv = get_syscall_convention(core);
+  RRegItem *item = NULL;
+  if (conv && conv->syscall_reg) {
+    item = r_reg_get(core->anal->reg, conv->syscall_reg, -1);
+    if (!item && conv->alt_syscall_reg) {
+      item = r_reg_get(core->anal->reg, conv->alt_syscall_reg, -1);
+    }
+  }
+  if (!item) {
+    item = r_reg_get(core->anal->reg, "rax", -1);
+    if (!item) {
+      item = r_reg_get(core->anal->reg, "eax", -1);
+    }
+    if (!item) {
+      item = r_reg_get(core->anal->reg, "x8", -1);
+    }
+    if (!item) {
+      item = r_reg_get(core->anal->reg, "r7", -1);
+    }
+  }
+
+  if (item) {
+    ut64 syscall_number = r_reg_get_value(core->anal->reg, item);
+    find_syscall(core, (int)syscall_number, current_addr, add_comment);
+  } else {
+    r_cons_printf(core->cons, "Could not find syscall number register\n");
+  }
 
   r_anal_op_fini(&op);
   r_cons_flush(core->cons);
@@ -190,22 +319,20 @@ bool read_sys_call(RCorePluginSession *cps, const char *input) {
   if (!cps || !cps->core) {
     return false;
   }
-  r_core_autocomplete_add(cps->core->autocomplete, "ps psy",
+  r_core_autocomplete_add(cps->core->autocomplete, "ps psy psyc",
                           R_CORE_AUTOCMPLT_DFLT, true);
   RCore *core = cps->core;
   if (r_str_eq(input, "psy")) {
-    return is_syscall(cps, input);
-  } else if (r_str_eq(input, "ps?")) {
-    r_core_cmd_help(core, help_msg_p);
-    return false;
-  } else if (r_str_eq(input, "psy?")) {
+    return is_syscall(cps, false);
+  } else if (r_str_eq(input, "psyc")) {
+    return is_syscall(cps, true);
+  } else if (r_str_eq(input, "ps?") || r_str_eq(input, "psy?") || r_str_eq(input, "psyc?")) {
     r_core_cmd_help(core, help_msg_p);
     return true;
   }
   return false;
 }
 
-// PLUGIN Definition Info
 RCorePlugin r_core_plugin_sysreader = {
     .meta =
         {

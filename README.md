@@ -1,25 +1,123 @@
-# SysReader, a Radare2 Syscall Parsing Helper
+# SysReader: A Radare2 Syscall & Flag Parsing Plugin
 
-When reverse engineering Linux malware, a painful part of the job is figuring out what a specific syscall is doing. This can be hard to do at a glace, especially if you are not willing to analyse it in an environment with:
-* an internet connection
-* a local LLM to help with reversing
+When reverse engineering Linux malware or stripped binaries, understanding what a system call is doing at a glance can be tedious. SysReader is an offline, air-gapped Radare2 plugin designed to dynamically inspect system calls right before execution, resolving register arguments, dereferencing memory pointers, and decoding complex bitwise flags and signals into human-readable C-style comments.
 
-The program is rather simple despite being in its early stages. At the moment, when encountering a syscall, it will read the value of RAX and pass that to Radare's own `ask` command to get the syscall name and argument paramters. The plugin then parses each argument, which fortunately, is limited to a subset of [predefined registers](https://kernel-internals.org/arch/x86/syscall-entry/).
-
-An example of the plugin in action is shown below:
 ![](imgs/image_1786433163.png)
 
-The syscall argument flags are mainly parsed by querying a JSON file that accompanies the plugin's shared object. This allows us to have a growing number of supported syscalls. Currently, a development goal that I have for this plugin is to gain more coverage for syscalls within the standard Linux Kernel.
+---
 
-## Why not just use something that leverages the eBPF filters
+## Key Features
 
-While eBPF is certainly great and would make working with syscalls much easier, it is reliant on the call being made. This plugin is focused on making sure that you are able to tell what the call is going to do before it is executed.
+* **Multi-Architecture & Multi-Bitness Support**: Automatically detects target architecture and calling conventions via radare2 (`asm.arch` and `asm.bits`):
+  * **x86_64**: Syscall opcode `syscall`, syscall number in `rax`, arguments in `rdi`, `rsi`, `rdx`, `r10`, `r8`, `r9`.
+  * **x86 (32-bit i386)**: Syscall opcode `int 0x80`, syscall number in `eax`, arguments in `ebx`, `ecx`, `edx`, `esi`, `edi`, `ebp`.
+  * **ARM64 (AArch64)**: Syscall opcode `svc #0`, syscall number in `x8`, arguments in `x0`, `x1`, `x2`, `x3`, `x4`, `x5`.
+  * **ARM (32-bit EABI)**: Syscall opcode `svc 0` / `swi 0`, syscall number in `r7`, arguments in `r0`, `r1`, `r2`, `r3`, `r4`, `r5`.
+* **Bitwise Flag & Signal Decomposition**:
+  * Deconstructs compound flag masks into constituent definitions (e.g. `O_RDWR | O_CREAT | O_CLOEXEC`).
+  * Distinguishes discrete signal values from bitwise flags in syscalls like `clone` (e.g., separating low 8-bit `SIGCHLD` from upper `CLONE_*` namespace flags).
+* **Inline Flag Explanations**: Embeds human-readable descriptions directly within the output in standard C comment syntax (`/* ... */`).
+* **Memory & String Previews**: Automatically dereferences pointer arguments and string paths (e.g. `"/etc/passwd" @ 0x...`).
+* **Radare2 Comment Integration (`psyc`)**: Directly annotates radare2 assembly disassembly with the resolved syscall expression.
 
-## Development goals
+---
 
-The plugin is still in its MVP (minimal viable product) phase, future development objectives are listed below:
-* Expanded coverage of standard linux kernel syscalls and flags
-* Expansion beyond x86_64 to account for syscalls to cover ARM and other popular architectures
-* Struct dereferencing to deal with more complex syscalls like `clone3`, which uses a struct to hold other parameters because the actual paramter could would be much higher than the limitations that are normally associated with syscall arguments
+## Why Not Just Use eBPF or strace?
 
+While `strace` and `eBPF` are powerful dynamic analysis tools, they are reliant on the program actually making the call. When analyzing evasive binaries, anti-debugging mechanisms, or dangerous malware in a controlled sandbox, an analyst often needs to know **what the call is going to do before it is executed**. SysReader operates directly inside your interactive radare2 session, without requiring network access, external services, or local LLMs.
 
+---
+
+## Commands & Usage
+
+SysReader registers the `ps` command prefix in radare2:
+
+| Command | Description |
+| :--- | :--- |
+| `psy` | Decodes the syscall at the current instruction pointer (`PC`) and prints the call, parameters, and flag explanations to the console. |
+| `psyc` | Decodes the syscall, prints the output, **and** writes the complete expression as a radare2 comment at the current address. |
+| `ps?` / `psy?` / `psyc?` | Displays plugin command help. |
+
+### Example Session
+
+Breakpoint set at a 32-bit `int 0x80` `clone` syscall:
+
+```text
+[0x0804931d]> psy
+clone( flags = 0x4000011 (CLONE_NEWUTS /* New UTS namespace (hostname/domain) */ | SIGCHLD /* Child process status changed */), newsp = 0xf7d73000, parent_tidptr = 0x4000011, child_tidptr = 0x804bff4, tls = 0xf7feab60);
+```
+
+Using `psyc` to annotate the instruction in radare2 disassembly:
+
+```text
+[0x0804931d]> psyc
+clone( flags = 0x4000011 (CLONE_NEWUTS /* New UTS namespace (hostname/domain) */ | SIGCHLD /* Child process status changed */), newsp = 0xf7d73000, parent_tidptr = 0x4000011, child_tidptr = 0x804bff4, tls = 0xf7feab60);
+Added comment at 0x0804931d
+
+[0x0804931d]> pd 1
+; clone( flags = 0x4000011 (CLONE_NEWUTS /* New UTS namespace (hostnam
+; e/domain) */ | SIGCHLD /* Child process status changed */), newsp = 0x
+; f7d73000, parent_tidptr = 0x4000011, child_tidptr = 0x804bff4, tls = 0
+; xf7feab60);
+            0x0804931d b    cd80           int 0x80
+```
+
+---
+
+## Syscall Database & The Parser (`parser.py`)
+
+SysReader relies on an offline JSON database (`data/syscalls.json`) that maps Linux syscall numbers, argument schemas, bitwise flags, and signals.
+
+### How `parser.py` Works
+
+Rather than relying on fragile manual lists or regexes, [`parser.py`](parser.py) dynamically inspects host Linux kernel and C library headers:
+1. **Preprocessor Extraction**: Runs `gcc -dM -E <header>` across system headers (`<fcntl.h>`, `<sys/mman.h>`, `<linux/sched.h>`, `<sys/mount.h>`, `<sys/wait.h>`, etc.) to extract raw macro definitions.
+2. **Iterative Constant & Bitwise Evaluation**: Recursively parses bitwise shifts (`1 << 6`), hexadecimal literals, and aliases.
+3. **Fallback C Compiler Evaluation**: For complex multi-tiered macros, expressions are compiled in an ephemeral C translation unit to extract the exact evaluated integer constants.
+4. **Noise Filtering & Canonical Selection**: Filters out compiler-internal definitions and deprecated aliases, keeping clean POSIX and Linux flag names.
+5. **Signal Separation**: Identifies discrete exit signals for process creation syscalls (`clone`, `clone3`, `kill`, `tkill`) so they do not collide with bitwise mask calculations.
+
+### Regenerating the Database
+
+To update or regenerate the syscall database against your local system headers:
+
+```bash
+python3 parser.py --output data/syscalls.json
+```
+
+---
+
+## Building and Installation
+
+### Prerequisites
+
+* **radare2** (version 5.8+ / 6.x+)
+* **gcc** / **clang**
+* **make** and **pkg-config**
+
+### Build & Install
+
+```bash
+# Build the shared object plugin
+make
+
+# Install the plugin and JSON database to ~/.local/share/radare2/plugins/
+make install
+```
+
+### Uninstall
+
+```bash
+make uninstall
+```
+
+---
+
+## Development Roadmap
+
+* [x] Expanded Linux kernel syscall flag and signal coverage (80+ syscalls)
+* [x] Multi-architecture support (x86_64, x86_32, ARM64, ARM32)
+* [x] Inline human-readable comments explaining flags
+* [x] Radare2 comment annotation command (`psyc`)
+* [ ] Struct dereferencing for modern complex syscalls (`clone3` with `struct clone_args`, `openat2` with `struct open_how`)
+* [ ] Cross-OS support (Windows NT syscalls, macOS/Darwin BSD syscalls)
