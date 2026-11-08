@@ -1,0 +1,95 @@
+"""
+Configuration, header paths, blacklists, and alias preferences for SysReader parser.
+"""
+
+DEFAULT_HEADERS = [
+    # File and VFS headers
+    "/usr/include/asm-generic/fcntl.h",
+    "/usr/include/fcntl.h",
+    "/usr/include/linux/fcntl.h",
+    "/usr/include/linux/fs.h",
+    "/usr/include/linux/openat2.h",
+    "/usr/include/linux/falloc.h",
+    "/usr/include/sys/stat.h",
+    "/usr/include/linux/stat.h",
+    "/usr/include/sys/mount.h",
+    "/usr/include/linux/mount.h",
+    "/usr/include/poll.h",
+    "/usr/include/sys/epoll.h",
+    "/usr/include/linux/eventpoll.h",
+    "/usr/include/sys/inotify.h",
+    "/usr/include/sys/eventfd.h",
+    "/usr/include/sys/signalfd.h",
+    "/usr/include/sys/timerfd.h",
+    # Memory headers
+    "/usr/include/asm-generic/mman.h",
+    "/usr/include/asm-generic/mman-common.h",
+    "/usr/include/sys/mman.h",
+    "/usr/include/linux/mman.h",
+    "/usr/include/linux/memfd.h",
+    "/usr/include/linux/userfaultfd.h",
+    # Process & IPC headers
+    "/usr/include/linux/sched.h",
+    "/usr/include/sched.h",
+    "/usr/include/signal.h",
+    "/usr/include/sys/wait.h",
+    "/usr/include/linux/wait.h",
+    "/usr/include/linux/prctl.h",
+    "/usr/include/sys/prctl.h",
+    "/usr/include/sys/ptrace.h",
+    "/usr/include/linux/ptrace.h",
+    "/usr/include/linux/futex.h",
+    "/usr/include/linux/pidfd.h",
+    "/usr/include/linux/reboot.h",
+    "/usr/include/linux/bpf.h",
+    "/usr/include/linux/random.h",
+    "/usr/include/linux/io_uring.h",
+    "/usr/include/linux/kexec.h",
+    # Networking headers
+    "/usr/include/sys/socket.h",
+    "/usr/include/linux/socket.h",
+    "/usr/include/netinet/in.h",
+    "/usr/include/linux/in.h",
+    "/usr/include/unistd.h",
+]
+
+# Blacklist of macro names that are not valid flags/options
+MACRO_BLACKLIST = {
+    "MAP_FAILED",
+    "MAP_HUGE_SHIFT",
+    "MAP_HUGE_MASK",
+    "CLONE_ARGS_SIZE_VER0",
+    "CLONE_ARGS_SIZE_VER1",
+    "CLONE_ARGS_SIZE_VER2",
+    "SIGSTKSZ",
+    "SIGRTMIN",
+    "SIGRTMAX",
+    "SIGUNUSED",
+    "SIG_BLOCK",
+    "SIG_UNBLOCK",
+    "SIG_SETMASK",
+    "SIG_DFL",
+    "SIG_IGN",
+    "SIG_ERR",
+    "O_ACCMODE",
+    "AF_MAX",
+    "SOCK_IOC_TYPE",
+    "SOCK_TXREHASH_ENABLED",
+    "SOCK_TXREHASH_DISABLED",
+    "SOCK_TXREHASH_DEFAULT",
+    "SOCK_SNDBUF_LOCK",
+    "SOCK_RCVBUF_LOCK",
+    "SOCK_BUF_LOCK_MASK",
+}
+
+# Canonical names for aliases (preferred name over alias)
+PREFERRED_NAMES = {
+    "MAP_ANON": "MAP_ANONYMOUS",
+    "O_NDELAY": "O_NONBLOCK",
+    "O_FSYNC": "O_SYNC",
+    "O_RSYNC": "O_SYNC",
+    "SIGCLD": "SIGCHLD",
+    "SIGIOT": "SIGABRT",
+    "SIGPOLL": "SIGIO",
+    "SIGUNUSED": "SIGSYS",
+}
