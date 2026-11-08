@@ -205,8 +205,8 @@ def filter_flags(matched_flags, target_arg_name="", blacklist=None, preferred_na
         # Internal glibc/kernel macros starting with double underscore
         if name.startswith("__") and not name.startswith("__W"):
             continue
-        # Filter signal names to standard signal range (1..32)
-        if name.startswith("SIG"):
+        # Filter signal names to standard signal range (1..32), unless target arg is 'how' (which uses SIG_BLOCK/UNBLOCK/SETMASK)
+        if name.startswith("SIG") and target_arg_name != "how":
             if name.startswith("SIG_") or name.startswith("SIGEV_") or name.startswith("SIGRT"):
                 continue
             if val < 1 or val > 32:

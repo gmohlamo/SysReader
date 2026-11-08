@@ -35,14 +35,17 @@ class SyscallDatabaseBuilder:
     def _extract_all_target_prefixes(self):
         """Extracts all configured macro prefixes across all syscalls and struct fields."""
         target_prefixes = set()
+
+        def _collect(val):
+            if isinstance(val, list):
+                target_prefixes.update(val)
+            elif isinstance(val, dict):
+                for v in val.values():
+                    _collect(v)
+
         for sc in self.prefix_routing.values():
-            for item in sc.values():
-                if isinstance(item, list):
-                    target_prefixes.update(item)
-                elif isinstance(item, dict):
-                    for sub in item.values():
-                        if isinstance(sub, list):
-                            target_prefixes.update(sub)
+            _collect(sc)
+
         return target_prefixes
 
     def build_database(self):

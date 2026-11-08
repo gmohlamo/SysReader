@@ -5,8 +5,6 @@ Entrypoint script for parsing host Linux headers and generating data/syscalls.js
 Refactored into modular components under `parser_core/`.
 """
 
-import os
-import sys
 import argparse
 from parser_core import SyscallDatabaseBuilder
 

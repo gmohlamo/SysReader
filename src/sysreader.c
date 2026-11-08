@@ -161,18 +161,26 @@ static bool is_syscall_instruction(const RAnalOp *op) {
   if (!op) {
     return false;
   }
-  if (op->type == R_ANAL_OP_TYPE_SWI) {
+  if (!op->mnemonic) {
+    return op->type == R_ANAL_OP_TYPE_SWI;
+  }
+
+  // x86-64 / modern x86
+  if (r_str_startswith(op->mnemonic, "syscall") ||
+      r_str_startswith(op->mnemonic, "sysenter")) {
     return true;
   }
-  if (op->mnemonic) {
-    if (r_str_startswith(op->mnemonic, "syscall") ||
-        r_str_startswith(op->mnemonic, "sysenter") ||
-        r_str_startswith(op->mnemonic, "svc") ||
-        r_str_startswith(op->mnemonic, "swi") ||
-        r_str_startswith(op->mnemonic, "int")) {
-      return true;
-    }
+  // ARM / AArch64
+  if (r_str_startswith(op->mnemonic, "svc") ||
+      r_str_startswith(op->mnemonic, "swi")) {
+    return true;
   }
+  // x86 32-bit Linux syscall (int 0x80)
+  if (r_str_startswith(op->mnemonic, "int")) {
+    return op->val == 0x80 || strstr(op->mnemonic, "0x80") != NULL ||
+           (op->size >= 2 && op->bytes && op->bytes[0] == 0xcd && op->bytes[1] == 0x80);
+  }
+
   return false;
 }
 
@@ -181,31 +189,31 @@ static bool is_syscall_instruction(const RAnalOp *op) {
  * Returns a newly allocated string (caller must free) or NULL on error
  */
 char *read_string_from_target(RCore *core, uint64_t addr, size_t max_len) {
-  if (addr == 0 || !core) {
+  if (addr == 0 || !core || !core->io) {
     return NULL;
   }
 
-  char *buffer = malloc(max_len + 1);
+  char *buffer = calloc(1, max_len + 1);
   if (!buffer) {
     return NULL;
   }
 
   // Use radare2's IO interface to read memory
-  int bytes_read = r_io_read_at(core->io, addr, (uint8_t *)buffer, max_len);
+  bool ok = r_io_read_at(core->io, addr, (uint8_t *)buffer, max_len);
 
-  if (bytes_read <= 0) {
+  if (!ok) {
     free(buffer);
     return NULL;
   }
 
-  // Ensure null termination
-  buffer[bytes_read] = '\0';
+  // Ensure null termination at maximum read boundary
+  buffer[max_len] = '\0';
 
   return buffer;
 }
 
 void find_syscall(RCore *core, int callnum, ut64 current_addr, bool add_comment) {
-  if (!core) {
+  if (!core || !core->anal || !core->anal->syscall) {
     return;
   }
 

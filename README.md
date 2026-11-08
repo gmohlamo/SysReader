@@ -64,16 +64,26 @@ Added comment at 0x0804931d
 
 ---
 
-## Syscall Database & The Parser (`parser.py`)
+## Syscall Database & The Parser (`parser_core/` & `parser.py`)
 
 SysReader relies on an offline JSON database (`data/syscalls.json`) that maps Linux syscall numbers, argument schemas, bitwise flags, and signals.
 
-### How `parser.py` Works
+### Architecture of the Parser Package
 
-Rather than relying on fragile manual lists or regexes, [`parser.py`](parser.py) dynamically inspects host Linux kernel and C library headers:
-1. **Preprocessor Extraction**: Runs `gcc -dM -E <header>` across system headers (`<fcntl.h>`, `<sys/mman.h>`, `<linux/sched.h>`, `<sys/mount.h>`, `<sys/wait.h>`, etc.) to extract raw macro definitions.
+The parser is structured into a modular Python package located in [`parser_core/`](parser_core/) with a lightweight CLI entrypoint in [`parser.py`](parser.py):
+
+* **[`parser.py`](parser.py)**: CLI wrapper providing argument parsing (`--output`, `--extra-headers`, `--test-only`).
+* **[`parser_core/config.py`](parser_core/config.py)**: Defines default system headers (`DEFAULT_HEADERS`), preprocessor noise blacklists (`MACRO_BLACKLIST`), and canonical flag name mappings (`PREFERRED_NAMES`).
+* **[`parser_core/routing.py`](parser_core/routing.py)**: Flag prefix routing table (`PREFIX_ROUTING`) mapping syscall arguments and struct fields to relevant macro prefixes.
+* **[`parser_core/schemas.py`](parser_core/schemas.py)**: Base syscall signatures and argument schemas for 83+ Linux syscalls, plus fallback structs (`clone_args`, `open_how`).
+* **[`parser_core/evaluator.py`](parser_core/evaluator.py)**: GCC preprocessor scanning (`gcc -dM -E` with multiarch fallback), struct extraction, and batch C compiler constant evaluation.
+* **[`parser_core/builder.py`](parser_core/builder.py)**: Orchestrates header scanning, constant evaluation, flag filtering, and JSON serialization.
+
+### How Macro Parsing & Constant Resolution Works
+
+1. **Preprocessor Extraction**: Runs `gcc -dM -E` across host headers (`<fcntl.h>`, `<sys/mman.h>`, `<linux/sched.h>`, `<sys/mount.h>`, `<sys/wait.h>`, etc.), automatically resolving multiarch header directories.
 2. **Iterative Constant & Bitwise Evaluation**: Recursively parses bitwise shifts (`1 << 6`), hexadecimal literals, and aliases.
-3. **Fallback C Compiler Evaluation**: For complex multi-tiered macros, expressions are compiled in an ephemeral C translation unit to extract the exact evaluated integer constants.
+3. **Fallback C Compiler Evaluation**: For complex multi-tiered macros, expressions are compiled in an ephemeral C translation unit with GCC to extract the exact evaluated integer constants.
 4. **Noise Filtering & Canonical Selection**: Filters out compiler-internal definitions and deprecated aliases, keeping clean POSIX and Linux flag names.
 5. **Signal Separation**: Identifies discrete exit signals for process creation syscalls (`clone`, `clone3`, `kill`, `tkill`) so they do not collide with bitwise mask calculations.
 
@@ -82,7 +92,14 @@ Rather than relying on fragile manual lists or regexes, [`parser.py`](parser.py)
 To update or regenerate the syscall database against your local system headers:
 
 ```bash
+# Standard generation
 python3 parser.py --output data/syscalls.json
+
+# Include additional custom or kernel headers
+python3 parser.py --extra-headers /path/to/custom_header.h --output data/syscalls.json
+
+# Quick schema verification without scanning all system headers
+python3 parser.py --test-only
 ```
 
 ---

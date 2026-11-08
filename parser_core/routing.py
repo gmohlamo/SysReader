@@ -200,9 +200,6 @@ PREFIX_ROUTING = {
     "eventfd2": {
         "flags": ["EFD_"],
     },
-    "signalfd": {
-        "flags": ["SFD_"],
-    },
     "signalfd4": {
         "flags": ["SFD_"],
     },
