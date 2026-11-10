@@ -12,27 +12,90 @@
                 "type": "int",
                 "param_index": 1,
                 "flags": {
-                    "O_RDONLY": 0,
-                    "O_NOCTTY": 256,
-                    "O_EXCL": 128,
-                    "O_DSYNC": 4096,
-                    "O_NONBLOCK": 2048,
-                    "O_APPEND": 1024,
-                    "O_WRONLY": 1,
-                    "O_RDWR": 2,
-                    "O_EMPTYPATH": 67108864,
-                    "O_NOATIME": 262144,
-                    "O_SYNC": 1052672,
-                    "O_CLOEXEC": 524288,
-                    "O_CREAT": 64,
-                    "O_LARGEFILE": 32768,
-                    "O_TRUNC": 512,
-                    "O_NOFOLLOW": 131072,
-                    "O_DIRECTORY": 65536,
-                    "O_DIRECT": 16384,
-                    "O_PATH": 2097152,
-                    "O_ASYNC": 8192,
-                    "O_TMPFILE": 4259840
+                    "O_RDONLY": {
+                        "value": 0,
+                        "desc": "Open read-only"
+                    },
+                    "O_NOCTTY": {
+                        "value": 256,
+                        "desc": "Do not assign controlling tty"
+                    },
+                    "O_EXCL": {
+                        "value": 128,
+                        "desc": "Exclusive creation error if exists"
+                    },
+                    "O_DSYNC": {
+                        "value": 4096,
+                        "desc": "Synchronize data only"
+                    },
+                    "O_NONBLOCK": {
+                        "value": 2048,
+                        "desc": "Non-blocking I/O mode"
+                    },
+                    "O_APPEND": {
+                        "value": 1024,
+                        "desc": "Append writes to end of file"
+                    },
+                    "O_WRONLY": {
+                        "value": 1,
+                        "desc": "Open write-only"
+                    },
+                    "O_RDWR": {
+                        "value": 2,
+                        "desc": "Open read/write"
+                    },
+                    "O_EMPTYPATH": {
+                        "value": 67108864,
+                        "desc": "Allow empty path"
+                    },
+                    "O_NOATIME": {
+                        "value": 262144,
+                        "desc": "Do not update access time"
+                    },
+                    "O_SYNC": {
+                        "value": 1052672,
+                        "desc": "Synchronous writes"
+                    },
+                    "O_CLOEXEC": {
+                        "value": 524288,
+                        "desc": "Close file descriptor on exec"
+                    },
+                    "O_CREAT": {
+                        "value": 64,
+                        "desc": "Create file if nonexistent"
+                    },
+                    "O_LARGEFILE": {
+                        "value": 32768,
+                        "desc": "Allow files > 2GB"
+                    },
+                    "O_TRUNC": {
+                        "value": 512,
+                        "desc": "Truncate file length to 0"
+                    },
+                    "O_NOFOLLOW": {
+                        "value": 131072,
+                        "desc": "Do not follow symlinks"
+                    },
+                    "O_DIRECTORY": {
+                        "value": 65536,
+                        "desc": "Must be a directory"
+                    },
+                    "O_DIRECT": {
+                        "value": 16384,
+                        "desc": "Direct I/O bypassing page cache"
+                    },
+                    "O_PATH": {
+                        "value": 2097152,
+                        "desc": "Open for path resolution only"
+                    },
+                    "O_ASYNC": {
+                        "value": 8192,
+                        "desc": "Signal-driven I/O"
+                    },
+                    "O_TMPFILE": {
+                        "value": 4259840,
+                        "desc": "Create unnamed temporary file"
+                    }
                 }
             },
             "2": {
@@ -40,18 +103,54 @@
                 "type": "mode_t",
                 "param_index": 2,
                 "flags": {
-                    "S_IXOTH": 1,
-                    "S_IRWXU": 448,
-                    "S_IWGRP": 16,
-                    "S_IWUSR": 128,
-                    "S_IRWXG": 56,
-                    "S_IRWXO": 7,
-                    "S_IRUSR": 256,
-                    "S_IXUSR": 64,
-                    "S_IWOTH": 2,
-                    "S_IRGRP": 32,
-                    "S_IXGRP": 8,
-                    "S_IROTH": 4,
+                    "S_IXOTH": {
+                        "value": 1,
+                        "desc": "Others execute permission"
+                    },
+                    "S_IRWXU": {
+                        "value": 448,
+                        "desc": "User read, write, execute"
+                    },
+                    "S_IWGRP": {
+                        "value": 16,
+                        "desc": "Group write permission"
+                    },
+                    "S_IWUSR": {
+                        "value": 128,
+                        "desc": "User write permission"
+                    },
+                    "S_IRWXG": {
+                        "value": 56,
+                        "desc": "Group read, write, execute"
+                    },
+                    "S_IRWXO": {
+                        "value": 7,
+                        "desc": "Others read, write, execute"
+                    },
+                    "S_IRUSR": {
+                        "value": 256,
+                        "desc": "User read permission"
+                    },
+                    "S_IXUSR": {
+                        "value": 64,
+                        "desc": "User execute permission"
+                    },
+                    "S_IWOTH": {
+                        "value": 2,
+                        "desc": "Others write permission"
+                    },
+                    "S_IRGRP": {
+                        "value": 32,
+                        "desc": "Group read permission"
+                    },
+                    "S_IXGRP": {
+                        "value": 8,
+                        "desc": "Group execute permission"
+                    },
+                    "S_IROTH": {
+                        "value": 4,
+                        "desc": "Others read permission"
+                    },
                     "S_IREAD": 256,
                     "S_IWRITE": 128
                 }
@@ -66,7 +165,10 @@
                 "type": "int",
                 "param_index": 0,
                 "flags": {
-                    "AT_FDCWD": -100
+                    "AT_FDCWD": {
+                        "value": -100,
+                        "desc": "Use current working directory"
+                    }
                 }
             },
             "1": {
@@ -79,27 +181,90 @@
                 "type": "int",
                 "param_index": 2,
                 "flags": {
-                    "O_RDONLY": 0,
-                    "O_NOCTTY": 256,
-                    "O_EXCL": 128,
-                    "O_DSYNC": 4096,
-                    "O_NONBLOCK": 2048,
-                    "O_APPEND": 1024,
-                    "O_WRONLY": 1,
-                    "O_RDWR": 2,
-                    "O_EMPTYPATH": 67108864,
-                    "O_NOATIME": 262144,
-                    "O_SYNC": 1052672,
-                    "O_CLOEXEC": 524288,
-                    "O_CREAT": 64,
-                    "O_LARGEFILE": 32768,
-                    "O_TRUNC": 512,
-                    "O_NOFOLLOW": 131072,
-                    "O_DIRECTORY": 65536,
-                    "O_DIRECT": 16384,
-                    "O_PATH": 2097152,
-                    "O_ASYNC": 8192,
-                    "O_TMPFILE": 4259840
+                    "O_RDONLY": {
+                        "value": 0,
+                        "desc": "Open read-only"
+                    },
+                    "O_NOCTTY": {
+                        "value": 256,
+                        "desc": "Do not assign controlling tty"
+                    },
+                    "O_EXCL": {
+                        "value": 128,
+                        "desc": "Exclusive creation error if exists"
+                    },
+                    "O_DSYNC": {
+                        "value": 4096,
+                        "desc": "Synchronize data only"
+                    },
+                    "O_NONBLOCK": {
+                        "value": 2048,
+                        "desc": "Non-blocking I/O mode"
+                    },
+                    "O_APPEND": {
+                        "value": 1024,
+                        "desc": "Append writes to end of file"
+                    },
+                    "O_WRONLY": {
+                        "value": 1,
+                        "desc": "Open write-only"
+                    },
+                    "O_RDWR": {
+                        "value": 2,
+                        "desc": "Open read/write"
+                    },
+                    "O_EMPTYPATH": {
+                        "value": 67108864,
+                        "desc": "Allow empty path"
+                    },
+                    "O_NOATIME": {
+                        "value": 262144,
+                        "desc": "Do not update access time"
+                    },
+                    "O_SYNC": {
+                        "value": 1052672,
+                        "desc": "Synchronous writes"
+                    },
+                    "O_CLOEXEC": {
+                        "value": 524288,
+                        "desc": "Close file descriptor on exec"
+                    },
+                    "O_CREAT": {
+                        "value": 64,
+                        "desc": "Create file if nonexistent"
+                    },
+                    "O_LARGEFILE": {
+                        "value": 32768,
+                        "desc": "Allow files > 2GB"
+                    },
+                    "O_TRUNC": {
+                        "value": 512,
+                        "desc": "Truncate file length to 0"
+                    },
+                    "O_NOFOLLOW": {
+                        "value": 131072,
+                        "desc": "Do not follow symlinks"
+                    },
+                    "O_DIRECTORY": {
+                        "value": 65536,
+                        "desc": "Must be a directory"
+                    },
+                    "O_DIRECT": {
+                        "value": 16384,
+                        "desc": "Direct I/O bypassing page cache"
+                    },
+                    "O_PATH": {
+                        "value": 2097152,
+                        "desc": "Open for path resolution only"
+                    },
+                    "O_ASYNC": {
+                        "value": 8192,
+                        "desc": "Signal-driven I/O"
+                    },
+                    "O_TMPFILE": {
+                        "value": 4259840,
+                        "desc": "Create unnamed temporary file"
+                    }
                 }
             },
             "3": {
@@ -107,18 +272,54 @@
                 "type": "mode_t",
                 "param_index": 3,
                 "flags": {
-                    "S_IXOTH": 1,
-                    "S_IRWXU": 448,
-                    "S_IWGRP": 16,
-                    "S_IWUSR": 128,
-                    "S_IRWXG": 56,
-                    "S_IRWXO": 7,
-                    "S_IRUSR": 256,
-                    "S_IXUSR": 64,
-                    "S_IWOTH": 2,
-                    "S_IRGRP": 32,
-                    "S_IXGRP": 8,
-                    "S_IROTH": 4,
+                    "S_IXOTH": {
+                        "value": 1,
+                        "desc": "Others execute permission"
+                    },
+                    "S_IRWXU": {
+                        "value": 448,
+                        "desc": "User read, write, execute"
+                    },
+                    "S_IWGRP": {
+                        "value": 16,
+                        "desc": "Group write permission"
+                    },
+                    "S_IWUSR": {
+                        "value": 128,
+                        "desc": "User write permission"
+                    },
+                    "S_IRWXG": {
+                        "value": 56,
+                        "desc": "Group read, write, execute"
+                    },
+                    "S_IRWXO": {
+                        "value": 7,
+                        "desc": "Others read, write, execute"
+                    },
+                    "S_IRUSR": {
+                        "value": 256,
+                        "desc": "User read permission"
+                    },
+                    "S_IXUSR": {
+                        "value": 64,
+                        "desc": "User execute permission"
+                    },
+                    "S_IWOTH": {
+                        "value": 2,
+                        "desc": "Others write permission"
+                    },
+                    "S_IRGRP": {
+                        "value": 32,
+                        "desc": "Group read permission"
+                    },
+                    "S_IXGRP": {
+                        "value": 8,
+                        "desc": "Group execute permission"
+                    },
+                    "S_IROTH": {
+                        "value": 4,
+                        "desc": "Others read permission"
+                    },
                     "S_IREAD": 256,
                     "S_IWRITE": 128
                 }
@@ -133,7 +334,10 @@
                 "type": "int",
                 "param_index": 0,
                 "flags": {
-                    "AT_FDCWD": -100
+                    "AT_FDCWD": {
+                        "value": -100,
+                        "desc": "Use current working directory"
+                    }
                 }
             },
             "1": {
@@ -153,27 +357,90 @@
                         "type": "__u64",
                         "field_index": 0,
                         "flags": {
-                            "O_RDONLY": 0,
-                            "O_NOCTTY": 256,
-                            "O_EXCL": 128,
-                            "O_DSYNC": 4096,
-                            "O_NONBLOCK": 2048,
-                            "O_APPEND": 1024,
-                            "O_WRONLY": 1,
-                            "O_RDWR": 2,
-                            "O_EMPTYPATH": 67108864,
-                            "O_NOATIME": 262144,
-                            "O_SYNC": 1052672,
-                            "O_CLOEXEC": 524288,
-                            "O_CREAT": 64,
-                            "O_LARGEFILE": 32768,
-                            "O_TRUNC": 512,
-                            "O_NOFOLLOW": 131072,
-                            "O_DIRECTORY": 65536,
-                            "O_DIRECT": 16384,
-                            "O_PATH": 2097152,
-                            "O_ASYNC": 8192,
-                            "O_TMPFILE": 4259840
+                            "O_RDONLY": {
+                                "value": 0,
+                                "desc": "Open read-only"
+                            },
+                            "O_NOCTTY": {
+                                "value": 256,
+                                "desc": "Do not assign controlling tty"
+                            },
+                            "O_EXCL": {
+                                "value": 128,
+                                "desc": "Exclusive creation error if exists"
+                            },
+                            "O_DSYNC": {
+                                "value": 4096,
+                                "desc": "Synchronize data only"
+                            },
+                            "O_NONBLOCK": {
+                                "value": 2048,
+                                "desc": "Non-blocking I/O mode"
+                            },
+                            "O_APPEND": {
+                                "value": 1024,
+                                "desc": "Append writes to end of file"
+                            },
+                            "O_WRONLY": {
+                                "value": 1,
+                                "desc": "Open write-only"
+                            },
+                            "O_RDWR": {
+                                "value": 2,
+                                "desc": "Open read/write"
+                            },
+                            "O_EMPTYPATH": {
+                                "value": 67108864,
+                                "desc": "Allow empty path"
+                            },
+                            "O_NOATIME": {
+                                "value": 262144,
+                                "desc": "Do not update access time"
+                            },
+                            "O_SYNC": {
+                                "value": 1052672,
+                                "desc": "Synchronous writes"
+                            },
+                            "O_CLOEXEC": {
+                                "value": 524288,
+                                "desc": "Close file descriptor on exec"
+                            },
+                            "O_CREAT": {
+                                "value": 64,
+                                "desc": "Create file if nonexistent"
+                            },
+                            "O_LARGEFILE": {
+                                "value": 32768,
+                                "desc": "Allow files > 2GB"
+                            },
+                            "O_TRUNC": {
+                                "value": 512,
+                                "desc": "Truncate file length to 0"
+                            },
+                            "O_NOFOLLOW": {
+                                "value": 131072,
+                                "desc": "Do not follow symlinks"
+                            },
+                            "O_DIRECTORY": {
+                                "value": 65536,
+                                "desc": "Must be a directory"
+                            },
+                            "O_DIRECT": {
+                                "value": 16384,
+                                "desc": "Direct I/O bypassing page cache"
+                            },
+                            "O_PATH": {
+                                "value": 2097152,
+                                "desc": "Open for path resolution only"
+                            },
+                            "O_ASYNC": {
+                                "value": 8192,
+                                "desc": "Signal-driven I/O"
+                            },
+                            "O_TMPFILE": {
+                                "value": 4259840,
+                                "desc": "Create unnamed temporary file"
+                            }
                         }
                     },
                     "1": {
@@ -181,18 +448,54 @@
                         "type": "__u64",
                         "field_index": 1,
                         "flags": {
-                            "S_IXOTH": 1,
-                            "S_IRWXU": 448,
-                            "S_IWGRP": 16,
-                            "S_IWUSR": 128,
-                            "S_IRWXG": 56,
-                            "S_IRWXO": 7,
-                            "S_IRUSR": 256,
-                            "S_IXUSR": 64,
-                            "S_IWOTH": 2,
-                            "S_IRGRP": 32,
-                            "S_IXGRP": 8,
-                            "S_IROTH": 4,
+                            "S_IXOTH": {
+                                "value": 1,
+                                "desc": "Others execute permission"
+                            },
+                            "S_IRWXU": {
+                                "value": 448,
+                                "desc": "User read, write, execute"
+                            },
+                            "S_IWGRP": {
+                                "value": 16,
+                                "desc": "Group write permission"
+                            },
+                            "S_IWUSR": {
+                                "value": 128,
+                                "desc": "User write permission"
+                            },
+                            "S_IRWXG": {
+                                "value": 56,
+                                "desc": "Group read, write, execute"
+                            },
+                            "S_IRWXO": {
+                                "value": 7,
+                                "desc": "Others read, write, execute"
+                            },
+                            "S_IRUSR": {
+                                "value": 256,
+                                "desc": "User read permission"
+                            },
+                            "S_IXUSR": {
+                                "value": 64,
+                                "desc": "User execute permission"
+                            },
+                            "S_IWOTH": {
+                                "value": 2,
+                                "desc": "Others write permission"
+                            },
+                            "S_IRGRP": {
+                                "value": 32,
+                                "desc": "Group read permission"
+                            },
+                            "S_IXGRP": {
+                                "value": 8,
+                                "desc": "Group execute permission"
+                            },
+                            "S_IROTH": {
+                                "value": 4,
+                                "desc": "Others read permission"
+                            },
                             "S_IREAD": 256,
                             "S_IWRITE": 128
                         }
@@ -232,18 +535,54 @@
                 "type": "mode_t",
                 "param_index": 1,
                 "flags": {
-                    "S_IXOTH": 1,
-                    "S_IRWXU": 448,
-                    "S_IWGRP": 16,
-                    "S_IWUSR": 128,
-                    "S_IRWXG": 56,
-                    "S_IRWXO": 7,
-                    "S_IRUSR": 256,
-                    "S_IXUSR": 64,
-                    "S_IWOTH": 2,
-                    "S_IRGRP": 32,
-                    "S_IXGRP": 8,
-                    "S_IROTH": 4,
+                    "S_IXOTH": {
+                        "value": 1,
+                        "desc": "Others execute permission"
+                    },
+                    "S_IRWXU": {
+                        "value": 448,
+                        "desc": "User read, write, execute"
+                    },
+                    "S_IWGRP": {
+                        "value": 16,
+                        "desc": "Group write permission"
+                    },
+                    "S_IWUSR": {
+                        "value": 128,
+                        "desc": "User write permission"
+                    },
+                    "S_IRWXG": {
+                        "value": 56,
+                        "desc": "Group read, write, execute"
+                    },
+                    "S_IRWXO": {
+                        "value": 7,
+                        "desc": "Others read, write, execute"
+                    },
+                    "S_IRUSR": {
+                        "value": 256,
+                        "desc": "User read permission"
+                    },
+                    "S_IXUSR": {
+                        "value": 64,
+                        "desc": "User execute permission"
+                    },
+                    "S_IWOTH": {
+                        "value": 2,
+                        "desc": "Others write permission"
+                    },
+                    "S_IRGRP": {
+                        "value": 32,
+                        "desc": "Group read permission"
+                    },
+                    "S_IXGRP": {
+                        "value": 8,
+                        "desc": "Group execute permission"
+                    },
+                    "S_IROTH": {
+                        "value": 4,
+                        "desc": "Others read permission"
+                    },
                     "S_IREAD": 256,
                     "S_IWRITE": 128
                 }
@@ -268,13 +607,34 @@
                 "type": "int",
                 "param_index": 2,
                 "flags": {
-                    "PROT_NONE": 0,
-                    "PROT_GROWSDOWN": 16777216,
-                    "PROT_EXEC": 4,
-                    "PROT_WRITE": 2,
-                    "PROT_READ": 1,
-                    "PROT_GROWSUP": 33554432,
-                    "PROT_SEM": 8
+                    "PROT_NONE": {
+                        "value": 0,
+                        "desc": "Page cannot be accessed"
+                    },
+                    "PROT_GROWSDOWN": {
+                        "value": 16777216,
+                        "desc": "Extend mapping downward"
+                    },
+                    "PROT_EXEC": {
+                        "value": 4,
+                        "desc": "Page can be executed"
+                    },
+                    "PROT_WRITE": {
+                        "value": 2,
+                        "desc": "Page can be written"
+                    },
+                    "PROT_READ": {
+                        "value": 1,
+                        "desc": "Page can be read"
+                    },
+                    "PROT_GROWSUP": {
+                        "value": 33554432,
+                        "desc": "Extend mapping upward"
+                    },
+                    "PROT_SEM": {
+                        "value": 8,
+                        "desc": "Page may be used for atomic ops"
+                    }
                 }
             },
             "3": {
@@ -282,27 +642,78 @@
                 "type": "int",
                 "param_index": 3,
                 "flags": {
-                    "MAP_EXECUTABLE": 4096,
-                    "MAP_UNINITIALIZED": 67108864,
+                    "MAP_EXECUTABLE": {
+                        "value": 4096,
+                        "desc": "Mark executable (ignored)"
+                    },
+                    "MAP_UNINITIALIZED": {
+                        "value": 67108864,
+                        "desc": "Do not clear anonymous pages"
+                    },
                     "MAP_TYPE": 15,
-                    "MAP_LOCKED": 8192,
-                    "MAP_NORESERVE": 16384,
-                    "MAP_STACK": 131072,
-                    "MAP_POPULATE": 32768,
-                    "MAP_FIXED_NOREPLACE": 1048576,
+                    "MAP_LOCKED": {
+                        "value": 8192,
+                        "desc": "Lock pages into memory"
+                    },
+                    "MAP_NORESERVE": {
+                        "value": 16384,
+                        "desc": "Do not reserve swap space"
+                    },
+                    "MAP_STACK": {
+                        "value": 131072,
+                        "desc": "Allocate suitable stack"
+                    },
+                    "MAP_POPULATE": {
+                        "value": 32768,
+                        "desc": "Pre-populate page tables"
+                    },
+                    "MAP_FIXED_NOREPLACE": {
+                        "value": 1048576,
+                        "desc": "Fail if address is already mapped"
+                    },
                     "MAP_FILE": 0,
-                    "MAP_DENYWRITE": 2048,
-                    "MAP_SYNC": 524288,
-                    "MAP_GROWSDOWN": 256,
-                    "MAP_HUGETLB": 262144,
-                    "MAP_FIXED": 16,
-                    "MAP_ANONYMOUS": 32,
-                    "MAP_NONBLOCK": 65536,
+                    "MAP_DENYWRITE": {
+                        "value": 2048,
+                        "desc": "ETXTBSY (ignored)"
+                    },
+                    "MAP_SYNC": {
+                        "value": 524288,
+                        "desc": "Perform synchronous page faults"
+                    },
+                    "MAP_GROWSDOWN": {
+                        "value": 256,
+                        "desc": "Stack-like downward growth"
+                    },
+                    "MAP_HUGETLB": {
+                        "value": 262144,
+                        "desc": "Use huge pages"
+                    },
+                    "MAP_FIXED": {
+                        "value": 16,
+                        "desc": "Interpret address exactly"
+                    },
+                    "MAP_ANONYMOUS": {
+                        "value": 32,
+                        "desc": "Anonymous memory (not backed by file)"
+                    },
+                    "MAP_NONBLOCK": {
+                        "value": 65536,
+                        "desc": "Do not block on I/O"
+                    },
                     "MAP_32BIT": 64,
-                    "MAP_PRIVATE": 2,
+                    "MAP_PRIVATE": {
+                        "value": 2,
+                        "desc": "Private copy-on-write mapping"
+                    },
                     "MAP_DROPPABLE": 8,
-                    "MAP_SHARED_VALIDATE": 3,
-                    "MAP_SHARED": 1,
+                    "MAP_SHARED_VALIDATE": {
+                        "value": 3,
+                        "desc": "Share changes & validate flags"
+                    },
+                    "MAP_SHARED": {
+                        "value": 1,
+                        "desc": "Share changes"
+                    },
                     "MAP_ABOVE4G": 128,
                     "MAP_HUGE_64KB": 1073741824,
                     "MAP_HUGE_512MB": 1946157056,
@@ -349,13 +760,34 @@
                 "type": "unsigned long",
                 "param_index": 2,
                 "flags": {
-                    "PROT_NONE": 0,
-                    "PROT_GROWSDOWN": 16777216,
-                    "PROT_EXEC": 4,
-                    "PROT_WRITE": 2,
-                    "PROT_READ": 1,
-                    "PROT_GROWSUP": 33554432,
-                    "PROT_SEM": 8
+                    "PROT_NONE": {
+                        "value": 0,
+                        "desc": "Page cannot be accessed"
+                    },
+                    "PROT_GROWSDOWN": {
+                        "value": 16777216,
+                        "desc": "Extend mapping downward"
+                    },
+                    "PROT_EXEC": {
+                        "value": 4,
+                        "desc": "Page can be executed"
+                    },
+                    "PROT_WRITE": {
+                        "value": 2,
+                        "desc": "Page can be written"
+                    },
+                    "PROT_READ": {
+                        "value": 1,
+                        "desc": "Page can be read"
+                    },
+                    "PROT_GROWSUP": {
+                        "value": 33554432,
+                        "desc": "Extend mapping upward"
+                    },
+                    "PROT_SEM": {
+                        "value": 8,
+                        "desc": "Page may be used for atomic ops"
+                    }
                 }
             }
         }
@@ -378,13 +810,34 @@
                 "type": "unsigned long",
                 "param_index": 2,
                 "flags": {
-                    "PROT_NONE": 0,
-                    "PROT_GROWSDOWN": 16777216,
-                    "PROT_EXEC": 4,
-                    "PROT_WRITE": 2,
-                    "PROT_READ": 1,
-                    "PROT_GROWSUP": 33554432,
-                    "PROT_SEM": 8
+                    "PROT_NONE": {
+                        "value": 0,
+                        "desc": "Page cannot be accessed"
+                    },
+                    "PROT_GROWSDOWN": {
+                        "value": 16777216,
+                        "desc": "Extend mapping downward"
+                    },
+                    "PROT_EXEC": {
+                        "value": 4,
+                        "desc": "Page can be executed"
+                    },
+                    "PROT_WRITE": {
+                        "value": 2,
+                        "desc": "Page can be written"
+                    },
+                    "PROT_READ": {
+                        "value": 1,
+                        "desc": "Page can be read"
+                    },
+                    "PROT_GROWSUP": {
+                        "value": 33554432,
+                        "desc": "Extend mapping upward"
+                    },
+                    "PROT_SEM": {
+                        "value": 8,
+                        "desc": "Page may be used for atomic ops"
+                    }
                 }
             },
             "3": {
@@ -447,7 +900,10 @@
                 "type": "int",
                 "param_index": 2,
                 "flags": {
-                    "MS_SYNCHRONOUS": 16,
+                    "MS_SYNCHRONOUS": {
+                        "value": 16,
+                        "desc": "Writes are synced immediately"
+                    },
                     "MS_ASYNC": 1,
                     "MS_SYNC": 4,
                     "MS_INVALIDATE": 2
@@ -591,14 +1047,23 @@
                 "type": "unsigned int",
                 "param_index": 1,
                 "flags": {
-                    "MFD_ALLOW_SEALING": 2,
+                    "MFD_ALLOW_SEALING": {
+                        "value": 2,
+                        "desc": "Allow sealing operations"
+                    },
                     "MFD_HUGE_16GB": 2281701376,
-                    "MFD_HUGETLB": 4,
+                    "MFD_HUGETLB": {
+                        "value": 4,
+                        "desc": "Use huge pages"
+                    },
                     "MFD_HUGE_SHIFT": 26,
                     "MFD_HUGE_2GB": 2080374784,
                     "MFD_NOEXEC_SEAL": 8,
                     "MFD_HUGE_32MB": 1677721600,
-                    "MFD_CLOEXEC": 1,
+                    "MFD_CLOEXEC": {
+                        "value": 1,
+                        "desc": "Close on exec"
+                    },
                     "MFD_HUGE_2MB": 1409286144,
                     "MFD_HUGE_256MB": 1879048192,
                     "MFD_HUGE_64KB": 1073741824,
@@ -628,8 +1093,14 @@
                     "UFFD_EVENT_FORK": 19,
                     "UFFD_USER_MODE_ONLY": 1,
                     "UFFD_EVENT_UNMAP": 22,
-                    "O_NONBLOCK": 2048,
-                    "O_CLOEXEC": 524288,
+                    "O_NONBLOCK": {
+                        "value": 2048,
+                        "desc": "Non-blocking I/O mode"
+                    },
+                    "O_CLOEXEC": {
+                        "value": 524288,
+                        "desc": "Close file descriptor on exec"
+                    },
                     "UFFD_FEATURE_RWP_ASYNC": 262144,
                     "UFFD_FEATURE_WP_ASYNC": 32768,
                     "UFFD_FEATURE_WP_HUGETLBFS_SHMEM": 4096,
@@ -671,70 +1142,244 @@
                 "type": "unsigned long",
                 "param_index": 0,
                 "flags": {
-                    "CLONE_NEWNET": 1073741824,
-                    "CLONE_NEWUTS": 67108864,
-                    "CLONE_NEWCGROUP": 33554432,
-                    "CLONE_SIGHAND": 2048,
-                    "CLONE_SETTLS": 524288,
-                    "CLONE_THREAD": 65536,
-                    "CLONE_DETACHED": 4194304,
-                    "CLONE_FILES": 1024,
-                    "CLONE_NEWNS": 131072,
-                    "CLONE_FS": 512,
-                    "CLONE_PARENT": 32768,
-                    "CLONE_PIDFD": 4096,
-                    "CLONE_SYSVSEM": 262144,
-                    "CLONE_PARENT_SETTID": 1048576,
-                    "CLONE_CHILD_SETTID": 16777216,
-                    "CLONE_NEWTIME": 128,
-                    "CLONE_NEWPID": 536870912,
-                    "CLONE_VFORK": 16384,
-                    "CLONE_NEWUSER": 268435456,
-                    "CLONE_IO": 2147483648,
-                    "CLONE_NEWIPC": 134217728,
-                    "CLONE_UNTRACED": 8388608,
-                    "CLONE_PTRACE": 8192,
-                    "CLONE_VM": 256,
-                    "CLONE_CHILD_CLEARTID": 2097152,
+                    "CLONE_NEWNET": {
+                        "value": 1073741824,
+                        "desc": "New network namespace"
+                    },
+                    "CLONE_NEWUTS": {
+                        "value": 67108864,
+                        "desc": "New UTS namespace (hostname/domain)"
+                    },
+                    "CLONE_NEWCGROUP": {
+                        "value": 33554432,
+                        "desc": "New cgroup namespace"
+                    },
+                    "CLONE_SIGHAND": {
+                        "value": 2048,
+                        "desc": "Share signal handlers"
+                    },
+                    "CLONE_SETTLS": {
+                        "value": 524288,
+                        "desc": "Set TLS descriptor"
+                    },
+                    "CLONE_THREAD": {
+                        "value": 65536,
+                        "desc": "Place in same thread group"
+                    },
+                    "CLONE_DETACHED": {
+                        "value": 4194304,
+                        "desc": "Detached (unused/ignored)"
+                    },
+                    "CLONE_FILES": {
+                        "value": 1024,
+                        "desc": "Share open file descriptors"
+                    },
+                    "CLONE_NEWNS": {
+                        "value": 131072,
+                        "desc": "New mount namespace"
+                    },
+                    "CLONE_FS": {
+                        "value": 512,
+                        "desc": "Share filesystem info"
+                    },
+                    "CLONE_PARENT": {
+                        "value": 32768,
+                        "desc": "Same parent as caller"
+                    },
+                    "CLONE_PIDFD": {
+                        "value": 4096,
+                        "desc": "Return child pidfd in parent"
+                    },
+                    "CLONE_SYSVSEM": {
+                        "value": 262144,
+                        "desc": "Share System V SEM_UNDO"
+                    },
+                    "CLONE_PARENT_SETTID": {
+                        "value": 1048576,
+                        "desc": "Store TID in parent"
+                    },
+                    "CLONE_CHILD_SETTID": {
+                        "value": 16777216,
+                        "desc": "Store TID in child"
+                    },
+                    "CLONE_NEWTIME": {
+                        "value": 128,
+                        "desc": "New time namespace"
+                    },
+                    "CLONE_NEWPID": {
+                        "value": 536870912,
+                        "desc": "New PID namespace"
+                    },
+                    "CLONE_VFORK": {
+                        "value": 16384,
+                        "desc": "Wake parent on exec/exit"
+                    },
+                    "CLONE_NEWUSER": {
+                        "value": 268435456,
+                        "desc": "New user namespace"
+                    },
+                    "CLONE_IO": {
+                        "value": 2147483648,
+                        "desc": "Share I/O context"
+                    },
+                    "CLONE_NEWIPC": {
+                        "value": 134217728,
+                        "desc": "New IPC namespace"
+                    },
+                    "CLONE_UNTRACED": {
+                        "value": 8388608,
+                        "desc": "Prevent ptrace tracing"
+                    },
+                    "CLONE_PTRACE": {
+                        "value": 8192,
+                        "desc": "Continue tracing child"
+                    },
+                    "CLONE_VM": {
+                        "value": 256,
+                        "desc": "Share virtual memory"
+                    },
+                    "CLONE_CHILD_CLEARTID": {
+                        "value": 2097152,
+                        "desc": "Clear TID in child on exit"
+                    },
                     "CLONE_EMPTY_MNTNS": 137438953472,
-                    "CLONE_INTO_CGROUP": 8589934592,
+                    "CLONE_INTO_CGROUP": {
+                        "value": 8589934592,
+                        "desc": "Spawn directly into cgroup"
+                    },
                     "CLONE_NNP": 34359738368,
-                    "CLONE_CLEAR_SIGHAND": 4294967296,
+                    "CLONE_CLEAR_SIGHAND": {
+                        "value": 4294967296,
+                        "desc": "Clear signal handlers to SIG_DFL"
+                    },
                     "CLONE_AUTOREAP": 17179869184,
                     "CLONE_PIDFD_AUTOKILL": 68719476736
                 },
                 "signals": {
-                    "SIGBUS": 7,
-                    "SIGTTIN": 21,
-                    "SIGPROF": 27,
-                    "SIGFPE": 8,
-                    "SIGSTKFLT": 16,
-                    "SIGUSR1": 10,
-                    "SIGTTOU": 22,
-                    "SIGURG": 23,
-                    "SIGQUIT": 3,
-                    "SIGABRT": 6,
-                    "SIGUSR2": 12,
-                    "SIGTRAP": 5,
-                    "SIGVTALRM": 26,
-                    "SIGSEGV": 11,
-                    "SIGCONT": 18,
-                    "SIGPIPE": 13,
-                    "SIGWINCH": 28,
-                    "SIGXFSZ": 25,
-                    "SIGCHLD": 17,
-                    "SIGSTOP": 19,
-                    "SIGSYS": 31,
-                    "SIGALRM": 14,
-                    "SIGTSTP": 20,
-                    "SIGKILL": 9,
-                    "SIGXCPU": 24,
-                    "SIGPWR": 30,
-                    "SIGILL": 4,
-                    "SIGINT": 2,
-                    "SIGTERM": 15,
-                    "SIGHUP": 1,
-                    "SIGIO": 29
+                    "SIGBUS": {
+                        "value": 7,
+                        "desc": "Memory bus error"
+                    },
+                    "SIGTTIN": {
+                        "value": 21,
+                        "desc": "Background read from tty"
+                    },
+                    "SIGPROF": {
+                        "value": 27,
+                        "desc": "Profiling timer expired"
+                    },
+                    "SIGFPE": {
+                        "value": 8,
+                        "desc": "Floating point exception"
+                    },
+                    "SIGSTKFLT": {
+                        "value": 16,
+                        "desc": "Stack fault on coprocessor"
+                    },
+                    "SIGUSR1": {
+                        "value": 10,
+                        "desc": "User-defined signal 1"
+                    },
+                    "SIGTTOU": {
+                        "value": 22,
+                        "desc": "Background write to tty"
+                    },
+                    "SIGURG": {
+                        "value": 23,
+                        "desc": "Urgent socket condition"
+                    },
+                    "SIGQUIT": {
+                        "value": 3,
+                        "desc": "Terminal quit (Ctrl+\\)"
+                    },
+                    "SIGABRT": {
+                        "value": 6,
+                        "desc": "Process abort"
+                    },
+                    "SIGUSR2": {
+                        "value": 12,
+                        "desc": "User-defined signal 2"
+                    },
+                    "SIGTRAP": {
+                        "value": 5,
+                        "desc": "Trace/breakpoint trap"
+                    },
+                    "SIGVTALRM": {
+                        "value": 26,
+                        "desc": "Virtual timer expired"
+                    },
+                    "SIGSEGV": {
+                        "value": 11,
+                        "desc": "Segmentation fault"
+                    },
+                    "SIGCONT": {
+                        "value": 18,
+                        "desc": "Continue executing if stopped"
+                    },
+                    "SIGPIPE": {
+                        "value": 13,
+                        "desc": "Broken pipe"
+                    },
+                    "SIGWINCH": {
+                        "value": 28,
+                        "desc": "Window size changed"
+                    },
+                    "SIGXFSZ": {
+                        "value": 25,
+                        "desc": "File size limit exceeded"
+                    },
+                    "SIGCHLD": {
+                        "value": 17,
+                        "desc": "Child process status changed"
+                    },
+                    "SIGSTOP": {
+                        "value": 19,
+                        "desc": "Stop executing (uncatchable)"
+                    },
+                    "SIGSYS": {
+                        "value": 31,
+                        "desc": "Bad system call"
+                    },
+                    "SIGALRM": {
+                        "value": 14,
+                        "desc": "Alarm timer expired"
+                    },
+                    "SIGTSTP": {
+                        "value": 20,
+                        "desc": "Terminal stop signal (Ctrl+Z)"
+                    },
+                    "SIGKILL": {
+                        "value": 9,
+                        "desc": "Kill signal (uncatchable)"
+                    },
+                    "SIGXCPU": {
+                        "value": 24,
+                        "desc": "CPU time limit exceeded"
+                    },
+                    "SIGPWR": {
+                        "value": 30,
+                        "desc": "Power supply failure"
+                    },
+                    "SIGILL": {
+                        "value": 4,
+                        "desc": "Illegal instruction"
+                    },
+                    "SIGINT": {
+                        "value": 2,
+                        "desc": "Terminal interrupt (Ctrl+C)"
+                    },
+                    "SIGTERM": {
+                        "value": 15,
+                        "desc": "Termination signal"
+                    },
+                    "SIGHUP": {
+                        "value": 1,
+                        "desc": "Terminal hangup"
+                    },
+                    "SIGIO": {
+                        "value": 29,
+                        "desc": "I/O now possible"
+                    }
                 }
             },
             "1": {
@@ -774,35 +1419,116 @@
                         "type": "__aligned_u64",
                         "field_index": 0,
                         "flags": {
-                            "CLONE_NEWNET": 1073741824,
-                            "CLONE_NEWUTS": 67108864,
-                            "CLONE_NEWCGROUP": 33554432,
-                            "CLONE_SIGHAND": 2048,
-                            "CLONE_SETTLS": 524288,
-                            "CLONE_THREAD": 65536,
-                            "CLONE_DETACHED": 4194304,
-                            "CLONE_FILES": 1024,
-                            "CLONE_NEWNS": 131072,
-                            "CLONE_FS": 512,
-                            "CLONE_PARENT": 32768,
-                            "CLONE_PIDFD": 4096,
-                            "CLONE_SYSVSEM": 262144,
-                            "CLONE_PARENT_SETTID": 1048576,
-                            "CLONE_CHILD_SETTID": 16777216,
-                            "CLONE_NEWTIME": 128,
-                            "CLONE_NEWPID": 536870912,
-                            "CLONE_VFORK": 16384,
-                            "CLONE_NEWUSER": 268435456,
-                            "CLONE_IO": 2147483648,
-                            "CLONE_NEWIPC": 134217728,
-                            "CLONE_UNTRACED": 8388608,
-                            "CLONE_PTRACE": 8192,
-                            "CLONE_VM": 256,
-                            "CLONE_CHILD_CLEARTID": 2097152,
+                            "CLONE_NEWNET": {
+                                "value": 1073741824,
+                                "desc": "New network namespace"
+                            },
+                            "CLONE_NEWUTS": {
+                                "value": 67108864,
+                                "desc": "New UTS namespace (hostname/domain)"
+                            },
+                            "CLONE_NEWCGROUP": {
+                                "value": 33554432,
+                                "desc": "New cgroup namespace"
+                            },
+                            "CLONE_SIGHAND": {
+                                "value": 2048,
+                                "desc": "Share signal handlers"
+                            },
+                            "CLONE_SETTLS": {
+                                "value": 524288,
+                                "desc": "Set TLS descriptor"
+                            },
+                            "CLONE_THREAD": {
+                                "value": 65536,
+                                "desc": "Place in same thread group"
+                            },
+                            "CLONE_DETACHED": {
+                                "value": 4194304,
+                                "desc": "Detached (unused/ignored)"
+                            },
+                            "CLONE_FILES": {
+                                "value": 1024,
+                                "desc": "Share open file descriptors"
+                            },
+                            "CLONE_NEWNS": {
+                                "value": 131072,
+                                "desc": "New mount namespace"
+                            },
+                            "CLONE_FS": {
+                                "value": 512,
+                                "desc": "Share filesystem info"
+                            },
+                            "CLONE_PARENT": {
+                                "value": 32768,
+                                "desc": "Same parent as caller"
+                            },
+                            "CLONE_PIDFD": {
+                                "value": 4096,
+                                "desc": "Return child pidfd in parent"
+                            },
+                            "CLONE_SYSVSEM": {
+                                "value": 262144,
+                                "desc": "Share System V SEM_UNDO"
+                            },
+                            "CLONE_PARENT_SETTID": {
+                                "value": 1048576,
+                                "desc": "Store TID in parent"
+                            },
+                            "CLONE_CHILD_SETTID": {
+                                "value": 16777216,
+                                "desc": "Store TID in child"
+                            },
+                            "CLONE_NEWTIME": {
+                                "value": 128,
+                                "desc": "New time namespace"
+                            },
+                            "CLONE_NEWPID": {
+                                "value": 536870912,
+                                "desc": "New PID namespace"
+                            },
+                            "CLONE_VFORK": {
+                                "value": 16384,
+                                "desc": "Wake parent on exec/exit"
+                            },
+                            "CLONE_NEWUSER": {
+                                "value": 268435456,
+                                "desc": "New user namespace"
+                            },
+                            "CLONE_IO": {
+                                "value": 2147483648,
+                                "desc": "Share I/O context"
+                            },
+                            "CLONE_NEWIPC": {
+                                "value": 134217728,
+                                "desc": "New IPC namespace"
+                            },
+                            "CLONE_UNTRACED": {
+                                "value": 8388608,
+                                "desc": "Prevent ptrace tracing"
+                            },
+                            "CLONE_PTRACE": {
+                                "value": 8192,
+                                "desc": "Continue tracing child"
+                            },
+                            "CLONE_VM": {
+                                "value": 256,
+                                "desc": "Share virtual memory"
+                            },
+                            "CLONE_CHILD_CLEARTID": {
+                                "value": 2097152,
+                                "desc": "Clear TID in child on exit"
+                            },
                             "CLONE_EMPTY_MNTNS": 137438953472,
-                            "CLONE_INTO_CGROUP": 8589934592,
+                            "CLONE_INTO_CGROUP": {
+                                "value": 8589934592,
+                                "desc": "Spawn directly into cgroup"
+                            },
                             "CLONE_NNP": 34359738368,
-                            "CLONE_CLEAR_SIGHAND": 4294967296,
+                            "CLONE_CLEAR_SIGHAND": {
+                                "value": 4294967296,
+                                "desc": "Clear signal handlers to SIG_DFL"
+                            },
                             "CLONE_AUTOREAP": 17179869184,
                             "CLONE_PIDFD_AUTOKILL": 68719476736
                         }
@@ -827,37 +1553,130 @@
                         "type": "__aligned_u64",
                         "field_index": 4,
                         "signals": {
-                            "SIGBUS": 7,
-                            "SIGTTIN": 21,
-                            "SIGPROF": 27,
-                            "SIGFPE": 8,
-                            "SIGSTKFLT": 16,
-                            "SIGUSR1": 10,
-                            "SIGTTOU": 22,
-                            "SIGURG": 23,
-                            "SIGQUIT": 3,
-                            "SIGABRT": 6,
-                            "SIGUSR2": 12,
-                            "SIGTRAP": 5,
-                            "SIGVTALRM": 26,
-                            "SIGSEGV": 11,
-                            "SIGCONT": 18,
-                            "SIGPIPE": 13,
-                            "SIGWINCH": 28,
-                            "SIGXFSZ": 25,
-                            "SIGCHLD": 17,
-                            "SIGSTOP": 19,
-                            "SIGSYS": 31,
-                            "SIGALRM": 14,
-                            "SIGTSTP": 20,
-                            "SIGKILL": 9,
-                            "SIGXCPU": 24,
-                            "SIGPWR": 30,
-                            "SIGILL": 4,
-                            "SIGINT": 2,
-                            "SIGTERM": 15,
-                            "SIGHUP": 1,
-                            "SIGIO": 29
+                            "SIGBUS": {
+                                "value": 7,
+                                "desc": "Memory bus error"
+                            },
+                            "SIGTTIN": {
+                                "value": 21,
+                                "desc": "Background read from tty"
+                            },
+                            "SIGPROF": {
+                                "value": 27,
+                                "desc": "Profiling timer expired"
+                            },
+                            "SIGFPE": {
+                                "value": 8,
+                                "desc": "Floating point exception"
+                            },
+                            "SIGSTKFLT": {
+                                "value": 16,
+                                "desc": "Stack fault on coprocessor"
+                            },
+                            "SIGUSR1": {
+                                "value": 10,
+                                "desc": "User-defined signal 1"
+                            },
+                            "SIGTTOU": {
+                                "value": 22,
+                                "desc": "Background write to tty"
+                            },
+                            "SIGURG": {
+                                "value": 23,
+                                "desc": "Urgent socket condition"
+                            },
+                            "SIGQUIT": {
+                                "value": 3,
+                                "desc": "Terminal quit (Ctrl+\\)"
+                            },
+                            "SIGABRT": {
+                                "value": 6,
+                                "desc": "Process abort"
+                            },
+                            "SIGUSR2": {
+                                "value": 12,
+                                "desc": "User-defined signal 2"
+                            },
+                            "SIGTRAP": {
+                                "value": 5,
+                                "desc": "Trace/breakpoint trap"
+                            },
+                            "SIGVTALRM": {
+                                "value": 26,
+                                "desc": "Virtual timer expired"
+                            },
+                            "SIGSEGV": {
+                                "value": 11,
+                                "desc": "Segmentation fault"
+                            },
+                            "SIGCONT": {
+                                "value": 18,
+                                "desc": "Continue executing if stopped"
+                            },
+                            "SIGPIPE": {
+                                "value": 13,
+                                "desc": "Broken pipe"
+                            },
+                            "SIGWINCH": {
+                                "value": 28,
+                                "desc": "Window size changed"
+                            },
+                            "SIGXFSZ": {
+                                "value": 25,
+                                "desc": "File size limit exceeded"
+                            },
+                            "SIGCHLD": {
+                                "value": 17,
+                                "desc": "Child process status changed"
+                            },
+                            "SIGSTOP": {
+                                "value": 19,
+                                "desc": "Stop executing (uncatchable)"
+                            },
+                            "SIGSYS": {
+                                "value": 31,
+                                "desc": "Bad system call"
+                            },
+                            "SIGALRM": {
+                                "value": 14,
+                                "desc": "Alarm timer expired"
+                            },
+                            "SIGTSTP": {
+                                "value": 20,
+                                "desc": "Terminal stop signal (Ctrl+Z)"
+                            },
+                            "SIGKILL": {
+                                "value": 9,
+                                "desc": "Kill signal (uncatchable)"
+                            },
+                            "SIGXCPU": {
+                                "value": 24,
+                                "desc": "CPU time limit exceeded"
+                            },
+                            "SIGPWR": {
+                                "value": 30,
+                                "desc": "Power supply failure"
+                            },
+                            "SIGILL": {
+                                "value": 4,
+                                "desc": "Illegal instruction"
+                            },
+                            "SIGINT": {
+                                "value": 2,
+                                "desc": "Terminal interrupt (Ctrl+C)"
+                            },
+                            "SIGTERM": {
+                                "value": 15,
+                                "desc": "Termination signal"
+                            },
+                            "SIGHUP": {
+                                "value": 1,
+                                "desc": "Terminal hangup"
+                            },
+                            "SIGIO": {
+                                "value": 29,
+                                "desc": "I/O now possible"
+                            }
                         }
                     },
                     "5": {
@@ -907,7 +1726,10 @@
                 "type": "int",
                 "param_index": 0,
                 "flags": {
-                    "AT_FDCWD": -100
+                    "AT_FDCWD": {
+                        "value": -100,
+                        "desc": "Use current working directory"
+                    }
                 }
             },
             "1": {
@@ -930,11 +1752,23 @@
                 "type": "int",
                 "param_index": 4,
                 "flags": {
-                    "AT_SYMLINK_NOFOLLOW": 256,
-                    "AT_SYMLINK_FOLLOW": 1024,
-                    "AT_REMOVEDIR": 512,
+                    "AT_SYMLINK_NOFOLLOW": {
+                        "value": 256,
+                        "desc": "Do not follow symlinks"
+                    },
+                    "AT_SYMLINK_FOLLOW": {
+                        "value": 1024,
+                        "desc": "Follow symlink"
+                    },
+                    "AT_REMOVEDIR": {
+                        "value": 512,
+                        "desc": "Remove directory instead of file"
+                    },
                     "AT_EACCESS": 512,
-                    "AT_STATX_SYNC_AS_STAT": 0,
+                    "AT_STATX_SYNC_AS_STAT": {
+                        "value": 0,
+                        "desc": "Stat-like sync behavior"
+                    },
                     "AT_EXECVE_CHECK": 65536,
                     "AT_RENAME_WHITEOUT": 4,
                     "AT_HANDLE_MNT_ID_UNIQUE": 1,
@@ -942,12 +1776,24 @@
                     "AT_RECURSIVE": 32768,
                     "AT_HANDLE_CONNECTABLE": 2,
                     "AT_HANDLE_FID": 512,
-                    "AT_NO_AUTOMOUNT": 2048,
-                    "AT_STATX_FORCE_SYNC": 8192,
-                    "AT_STATX_DONT_SYNC": 16384,
+                    "AT_NO_AUTOMOUNT": {
+                        "value": 2048,
+                        "desc": "Suppress terminal automount"
+                    },
+                    "AT_STATX_FORCE_SYNC": {
+                        "value": 8192,
+                        "desc": "Force sync attributes with server"
+                    },
+                    "AT_STATX_DONT_SYNC": {
+                        "value": 16384,
+                        "desc": "Do not sync attributes with server"
+                    },
                     "AT_STATX_SYNC_TYPE": 24576,
                     "AT_RENAME_EXCHANGE": 2,
-                    "AT_EMPTY_PATH": 4096
+                    "AT_EMPTY_PATH": {
+                        "value": 4096,
+                        "desc": "Allow empty path string"
+                    }
                 }
             }
         }
@@ -960,7 +1806,10 @@
                 "type": "int",
                 "param_index": 0,
                 "flags": {
-                    "AT_FDCWD": -100
+                    "AT_FDCWD": {
+                        "value": -100,
+                        "desc": "Use current working directory"
+                    }
                 }
             },
             "1": {
@@ -973,18 +1822,54 @@
                 "type": "mode_t",
                 "param_index": 2,
                 "flags": {
-                    "S_IXOTH": 1,
-                    "S_IRWXU": 448,
-                    "S_IWGRP": 16,
-                    "S_IWUSR": 128,
-                    "S_IRWXG": 56,
-                    "S_IRWXO": 7,
-                    "S_IRUSR": 256,
-                    "S_IXUSR": 64,
-                    "S_IWOTH": 2,
-                    "S_IRGRP": 32,
-                    "S_IXGRP": 8,
-                    "S_IROTH": 4,
+                    "S_IXOTH": {
+                        "value": 1,
+                        "desc": "Others execute permission"
+                    },
+                    "S_IRWXU": {
+                        "value": 448,
+                        "desc": "User read, write, execute"
+                    },
+                    "S_IWGRP": {
+                        "value": 16,
+                        "desc": "Group write permission"
+                    },
+                    "S_IWUSR": {
+                        "value": 128,
+                        "desc": "User write permission"
+                    },
+                    "S_IRWXG": {
+                        "value": 56,
+                        "desc": "Group read, write, execute"
+                    },
+                    "S_IRWXO": {
+                        "value": 7,
+                        "desc": "Others read, write, execute"
+                    },
+                    "S_IRUSR": {
+                        "value": 256,
+                        "desc": "User read permission"
+                    },
+                    "S_IXUSR": {
+                        "value": 64,
+                        "desc": "User execute permission"
+                    },
+                    "S_IWOTH": {
+                        "value": 2,
+                        "desc": "Others write permission"
+                    },
+                    "S_IRGRP": {
+                        "value": 32,
+                        "desc": "Group read permission"
+                    },
+                    "S_IXGRP": {
+                        "value": 8,
+                        "desc": "Group execute permission"
+                    },
+                    "S_IROTH": {
+                        "value": 4,
+                        "desc": "Others read permission"
+                    },
                     "S_IREAD": 256,
                     "S_IWRITE": 128
                 }
@@ -994,11 +1879,23 @@
                 "type": "int",
                 "param_index": 3,
                 "flags": {
-                    "AT_SYMLINK_NOFOLLOW": 256,
-                    "AT_SYMLINK_FOLLOW": 1024,
-                    "AT_REMOVEDIR": 512,
+                    "AT_SYMLINK_NOFOLLOW": {
+                        "value": 256,
+                        "desc": "Do not follow symlinks"
+                    },
+                    "AT_SYMLINK_FOLLOW": {
+                        "value": 1024,
+                        "desc": "Follow symlink"
+                    },
+                    "AT_REMOVEDIR": {
+                        "value": 512,
+                        "desc": "Remove directory instead of file"
+                    },
                     "AT_EACCESS": 512,
-                    "AT_STATX_SYNC_AS_STAT": 0,
+                    "AT_STATX_SYNC_AS_STAT": {
+                        "value": 0,
+                        "desc": "Stat-like sync behavior"
+                    },
                     "AT_EXECVE_CHECK": 65536,
                     "AT_RENAME_WHITEOUT": 4,
                     "AT_HANDLE_MNT_ID_UNIQUE": 1,
@@ -1006,12 +1903,24 @@
                     "AT_RECURSIVE": 32768,
                     "AT_HANDLE_CONNECTABLE": 2,
                     "AT_HANDLE_FID": 512,
-                    "AT_NO_AUTOMOUNT": 2048,
-                    "AT_STATX_FORCE_SYNC": 8192,
-                    "AT_STATX_DONT_SYNC": 16384,
+                    "AT_NO_AUTOMOUNT": {
+                        "value": 2048,
+                        "desc": "Suppress terminal automount"
+                    },
+                    "AT_STATX_FORCE_SYNC": {
+                        "value": 8192,
+                        "desc": "Force sync attributes with server"
+                    },
+                    "AT_STATX_DONT_SYNC": {
+                        "value": 16384,
+                        "desc": "Do not sync attributes with server"
+                    },
                     "AT_STATX_SYNC_TYPE": 24576,
                     "AT_RENAME_EXCHANGE": 2,
-                    "AT_EMPTY_PATH": 4096
+                    "AT_EMPTY_PATH": {
+                        "value": 4096,
+                        "desc": "Allow empty path string"
+                    }
                 }
             }
         }
@@ -1024,7 +1933,10 @@
                 "type": "int",
                 "param_index": 0,
                 "flags": {
-                    "AT_FDCWD": -100
+                    "AT_FDCWD": {
+                        "value": -100,
+                        "desc": "Use current working directory"
+                    }
                 }
             },
             "1": {
@@ -1047,11 +1959,23 @@
                 "type": "int",
                 "param_index": 4,
                 "flags": {
-                    "AT_SYMLINK_NOFOLLOW": 256,
-                    "AT_SYMLINK_FOLLOW": 1024,
-                    "AT_REMOVEDIR": 512,
+                    "AT_SYMLINK_NOFOLLOW": {
+                        "value": 256,
+                        "desc": "Do not follow symlinks"
+                    },
+                    "AT_SYMLINK_FOLLOW": {
+                        "value": 1024,
+                        "desc": "Follow symlink"
+                    },
+                    "AT_REMOVEDIR": {
+                        "value": 512,
+                        "desc": "Remove directory instead of file"
+                    },
                     "AT_EACCESS": 512,
-                    "AT_STATX_SYNC_AS_STAT": 0,
+                    "AT_STATX_SYNC_AS_STAT": {
+                        "value": 0,
+                        "desc": "Stat-like sync behavior"
+                    },
                     "AT_EXECVE_CHECK": 65536,
                     "AT_RENAME_WHITEOUT": 4,
                     "AT_HANDLE_MNT_ID_UNIQUE": 1,
@@ -1059,12 +1983,24 @@
                     "AT_RECURSIVE": 32768,
                     "AT_HANDLE_CONNECTABLE": 2,
                     "AT_HANDLE_FID": 512,
-                    "AT_NO_AUTOMOUNT": 2048,
-                    "AT_STATX_FORCE_SYNC": 8192,
-                    "AT_STATX_DONT_SYNC": 16384,
+                    "AT_NO_AUTOMOUNT": {
+                        "value": 2048,
+                        "desc": "Suppress terminal automount"
+                    },
+                    "AT_STATX_FORCE_SYNC": {
+                        "value": 8192,
+                        "desc": "Force sync attributes with server"
+                    },
+                    "AT_STATX_DONT_SYNC": {
+                        "value": 16384,
+                        "desc": "Do not sync attributes with server"
+                    },
                     "AT_STATX_SYNC_TYPE": 24576,
                     "AT_RENAME_EXCHANGE": 2,
-                    "AT_EMPTY_PATH": 4096
+                    "AT_EMPTY_PATH": {
+                        "value": 4096,
+                        "desc": "Allow empty path string"
+                    }
                 }
             }
         }
@@ -1077,7 +2013,10 @@
                 "type": "int",
                 "param_index": 0,
                 "flags": {
-                    "AT_FDCWD": -100
+                    "AT_FDCWD": {
+                        "value": -100,
+                        "desc": "Use current working directory"
+                    }
                 }
             },
             "1": {
@@ -1090,7 +2029,10 @@
                 "type": "int",
                 "param_index": 2,
                 "flags": {
-                    "AT_FDCWD": -100
+                    "AT_FDCWD": {
+                        "value": -100,
+                        "desc": "Use current working directory"
+                    }
                 }
             },
             "3": {
@@ -1103,11 +2045,23 @@
                 "type": "int",
                 "param_index": 4,
                 "flags": {
-                    "AT_SYMLINK_NOFOLLOW": 256,
-                    "AT_SYMLINK_FOLLOW": 1024,
-                    "AT_REMOVEDIR": 512,
+                    "AT_SYMLINK_NOFOLLOW": {
+                        "value": 256,
+                        "desc": "Do not follow symlinks"
+                    },
+                    "AT_SYMLINK_FOLLOW": {
+                        "value": 1024,
+                        "desc": "Follow symlink"
+                    },
+                    "AT_REMOVEDIR": {
+                        "value": 512,
+                        "desc": "Remove directory instead of file"
+                    },
                     "AT_EACCESS": 512,
-                    "AT_STATX_SYNC_AS_STAT": 0,
+                    "AT_STATX_SYNC_AS_STAT": {
+                        "value": 0,
+                        "desc": "Stat-like sync behavior"
+                    },
                     "AT_EXECVE_CHECK": 65536,
                     "AT_RENAME_WHITEOUT": 4,
                     "AT_HANDLE_MNT_ID_UNIQUE": 1,
@@ -1115,12 +2069,24 @@
                     "AT_RECURSIVE": 32768,
                     "AT_HANDLE_CONNECTABLE": 2,
                     "AT_HANDLE_FID": 512,
-                    "AT_NO_AUTOMOUNT": 2048,
-                    "AT_STATX_FORCE_SYNC": 8192,
-                    "AT_STATX_DONT_SYNC": 16384,
+                    "AT_NO_AUTOMOUNT": {
+                        "value": 2048,
+                        "desc": "Suppress terminal automount"
+                    },
+                    "AT_STATX_FORCE_SYNC": {
+                        "value": 8192,
+                        "desc": "Force sync attributes with server"
+                    },
+                    "AT_STATX_DONT_SYNC": {
+                        "value": 16384,
+                        "desc": "Do not sync attributes with server"
+                    },
                     "AT_STATX_SYNC_TYPE": 24576,
                     "AT_RENAME_EXCHANGE": 2,
-                    "AT_EMPTY_PATH": 4096
+                    "AT_EMPTY_PATH": {
+                        "value": 4096,
+                        "desc": "Allow empty path string"
+                    }
                 }
             }
         }
@@ -1133,7 +2099,10 @@
                 "type": "int",
                 "param_index": 0,
                 "flags": {
-                    "AT_FDCWD": -100
+                    "AT_FDCWD": {
+                        "value": -100,
+                        "desc": "Use current working directory"
+                    }
                 }
             },
             "1": {
@@ -1146,11 +2115,23 @@
                 "type": "int",
                 "param_index": 2,
                 "flags": {
-                    "AT_SYMLINK_NOFOLLOW": 256,
-                    "AT_SYMLINK_FOLLOW": 1024,
-                    "AT_REMOVEDIR": 512,
+                    "AT_SYMLINK_NOFOLLOW": {
+                        "value": 256,
+                        "desc": "Do not follow symlinks"
+                    },
+                    "AT_SYMLINK_FOLLOW": {
+                        "value": 1024,
+                        "desc": "Follow symlink"
+                    },
+                    "AT_REMOVEDIR": {
+                        "value": 512,
+                        "desc": "Remove directory instead of file"
+                    },
                     "AT_EACCESS": 512,
-                    "AT_STATX_SYNC_AS_STAT": 0,
+                    "AT_STATX_SYNC_AS_STAT": {
+                        "value": 0,
+                        "desc": "Stat-like sync behavior"
+                    },
                     "AT_EXECVE_CHECK": 65536,
                     "AT_RENAME_WHITEOUT": 4,
                     "AT_HANDLE_MNT_ID_UNIQUE": 1,
@@ -1158,12 +2139,24 @@
                     "AT_RECURSIVE": 32768,
                     "AT_HANDLE_CONNECTABLE": 2,
                     "AT_HANDLE_FID": 512,
-                    "AT_NO_AUTOMOUNT": 2048,
-                    "AT_STATX_FORCE_SYNC": 8192,
-                    "AT_STATX_DONT_SYNC": 16384,
+                    "AT_NO_AUTOMOUNT": {
+                        "value": 2048,
+                        "desc": "Suppress terminal automount"
+                    },
+                    "AT_STATX_FORCE_SYNC": {
+                        "value": 8192,
+                        "desc": "Force sync attributes with server"
+                    },
+                    "AT_STATX_DONT_SYNC": {
+                        "value": 16384,
+                        "desc": "Do not sync attributes with server"
+                    },
                     "AT_STATX_SYNC_TYPE": 24576,
                     "AT_RENAME_EXCHANGE": 2,
-                    "AT_EMPTY_PATH": 4096
+                    "AT_EMPTY_PATH": {
+                        "value": 4096,
+                        "desc": "Allow empty path string"
+                    }
                 }
             }
         }
@@ -1176,7 +2169,10 @@
                 "type": "int",
                 "param_index": 0,
                 "flags": {
-                    "AT_FDCWD": -100
+                    "AT_FDCWD": {
+                        "value": -100,
+                        "desc": "Use current working directory"
+                    }
                 }
             },
             "1": {
@@ -1209,7 +2205,10 @@
                 "type": "int",
                 "param_index": 1,
                 "flags": {
-                    "AT_FDCWD": -100
+                    "AT_FDCWD": {
+                        "value": -100,
+                        "desc": "Use current working directory"
+                    }
                 }
             },
             "2": {
@@ -1227,7 +2226,10 @@
                 "type": "int",
                 "param_index": 0,
                 "flags": {
-                    "AT_FDCWD": -100
+                    "AT_FDCWD": {
+                        "value": -100,
+                        "desc": "Use current working directory"
+                    }
                 }
             },
             "1": {
@@ -1245,11 +2247,23 @@
                 "type": "int",
                 "param_index": 3,
                 "flags": {
-                    "AT_SYMLINK_NOFOLLOW": 256,
-                    "AT_SYMLINK_FOLLOW": 1024,
-                    "AT_REMOVEDIR": 512,
+                    "AT_SYMLINK_NOFOLLOW": {
+                        "value": 256,
+                        "desc": "Do not follow symlinks"
+                    },
+                    "AT_SYMLINK_FOLLOW": {
+                        "value": 1024,
+                        "desc": "Follow symlink"
+                    },
+                    "AT_REMOVEDIR": {
+                        "value": 512,
+                        "desc": "Remove directory instead of file"
+                    },
                     "AT_EACCESS": 512,
-                    "AT_STATX_SYNC_AS_STAT": 0,
+                    "AT_STATX_SYNC_AS_STAT": {
+                        "value": 0,
+                        "desc": "Stat-like sync behavior"
+                    },
                     "AT_EXECVE_CHECK": 65536,
                     "AT_RENAME_WHITEOUT": 4,
                     "AT_HANDLE_MNT_ID_UNIQUE": 1,
@@ -1257,12 +2271,24 @@
                     "AT_RECURSIVE": 32768,
                     "AT_HANDLE_CONNECTABLE": 2,
                     "AT_HANDLE_FID": 512,
-                    "AT_NO_AUTOMOUNT": 2048,
-                    "AT_STATX_FORCE_SYNC": 8192,
-                    "AT_STATX_DONT_SYNC": 16384,
+                    "AT_NO_AUTOMOUNT": {
+                        "value": 2048,
+                        "desc": "Suppress terminal automount"
+                    },
+                    "AT_STATX_FORCE_SYNC": {
+                        "value": 8192,
+                        "desc": "Force sync attributes with server"
+                    },
+                    "AT_STATX_DONT_SYNC": {
+                        "value": 16384,
+                        "desc": "Do not sync attributes with server"
+                    },
                     "AT_STATX_SYNC_TYPE": 24576,
                     "AT_RENAME_EXCHANGE": 2,
-                    "AT_EMPTY_PATH": 4096
+                    "AT_EMPTY_PATH": {
+                        "value": 4096,
+                        "desc": "Allow empty path string"
+                    }
                 }
             }
         }
@@ -1275,7 +2301,10 @@
                 "type": "int",
                 "param_index": 0,
                 "flags": {
-                    "AT_FDCWD": -100
+                    "AT_FDCWD": {
+                        "value": -100,
+                        "desc": "Use current working directory"
+                    }
                 }
             },
             "1": {
@@ -1288,7 +2317,10 @@
                 "type": "int",
                 "param_index": 2,
                 "flags": {
-                    "AT_FDCWD": -100
+                    "AT_FDCWD": {
+                        "value": -100,
+                        "desc": "Use current working directory"
+                    }
                 }
             },
             "3": {
@@ -1301,9 +2333,18 @@
                 "type": "unsigned int",
                 "param_index": 4,
                 "flags": {
-                    "RENAME_EXCHANGE": 2,
-                    "RENAME_NOREPLACE": 1,
-                    "RENAME_WHITEOUT": 4
+                    "RENAME_EXCHANGE": {
+                        "value": 2,
+                        "desc": "Exchange source and destination atomically"
+                    },
+                    "RENAME_NOREPLACE": {
+                        "value": 1,
+                        "desc": "Do not overwrite destination"
+                    },
+                    "RENAME_WHITEOUT": {
+                        "value": 4,
+                        "desc": "Create whiteout object"
+                    }
                 }
             }
         }
@@ -1337,7 +2378,10 @@
                 "type": "int",
                 "param_index": 0,
                 "flags": {
-                    "AT_FDCWD": -100
+                    "AT_FDCWD": {
+                        "value": -100,
+                        "desc": "Use current working directory"
+                    }
                 }
             },
             "1": {
@@ -1366,7 +2410,10 @@
                 "type": "int",
                 "param_index": 0,
                 "flags": {
-                    "AT_FDCWD": -100
+                    "AT_FDCWD": {
+                        "value": -100,
+                        "desc": "Use current working directory"
+                    }
                 }
             },
             "1": {
@@ -1390,11 +2437,23 @@
                 "type": "int",
                 "param_index": 3,
                 "flags": {
-                    "AT_SYMLINK_NOFOLLOW": 256,
-                    "AT_SYMLINK_FOLLOW": 1024,
-                    "AT_REMOVEDIR": 512,
+                    "AT_SYMLINK_NOFOLLOW": {
+                        "value": 256,
+                        "desc": "Do not follow symlinks"
+                    },
+                    "AT_SYMLINK_FOLLOW": {
+                        "value": 1024,
+                        "desc": "Follow symlink"
+                    },
+                    "AT_REMOVEDIR": {
+                        "value": 512,
+                        "desc": "Remove directory instead of file"
+                    },
                     "AT_EACCESS": 512,
-                    "AT_STATX_SYNC_AS_STAT": 0,
+                    "AT_STATX_SYNC_AS_STAT": {
+                        "value": 0,
+                        "desc": "Stat-like sync behavior"
+                    },
                     "AT_EXECVE_CHECK": 65536,
                     "AT_RENAME_WHITEOUT": 4,
                     "AT_HANDLE_MNT_ID_UNIQUE": 1,
@@ -1402,12 +2461,24 @@
                     "AT_RECURSIVE": 32768,
                     "AT_HANDLE_CONNECTABLE": 2,
                     "AT_HANDLE_FID": 512,
-                    "AT_NO_AUTOMOUNT": 2048,
-                    "AT_STATX_FORCE_SYNC": 8192,
-                    "AT_STATX_DONT_SYNC": 16384,
+                    "AT_NO_AUTOMOUNT": {
+                        "value": 2048,
+                        "desc": "Suppress terminal automount"
+                    },
+                    "AT_STATX_FORCE_SYNC": {
+                        "value": 8192,
+                        "desc": "Force sync attributes with server"
+                    },
+                    "AT_STATX_DONT_SYNC": {
+                        "value": 16384,
+                        "desc": "Do not sync attributes with server"
+                    },
                     "AT_STATX_SYNC_TYPE": 24576,
                     "AT_RENAME_EXCHANGE": 2,
-                    "AT_EMPTY_PATH": 4096
+                    "AT_EMPTY_PATH": {
+                        "value": 4096,
+                        "desc": "Allow empty path string"
+                    }
                 }
             }
         }
@@ -1425,18 +2496,54 @@
                 "type": "mode_t",
                 "param_index": 1,
                 "flags": {
-                    "S_IXOTH": 1,
-                    "S_IRWXU": 448,
-                    "S_IWGRP": 16,
-                    "S_IWUSR": 128,
-                    "S_IRWXG": 56,
-                    "S_IRWXO": 7,
-                    "S_IRUSR": 256,
-                    "S_IXUSR": 64,
-                    "S_IWOTH": 2,
-                    "S_IRGRP": 32,
-                    "S_IXGRP": 8,
-                    "S_IROTH": 4,
+                    "S_IXOTH": {
+                        "value": 1,
+                        "desc": "Others execute permission"
+                    },
+                    "S_IRWXU": {
+                        "value": 448,
+                        "desc": "User read, write, execute"
+                    },
+                    "S_IWGRP": {
+                        "value": 16,
+                        "desc": "Group write permission"
+                    },
+                    "S_IWUSR": {
+                        "value": 128,
+                        "desc": "User write permission"
+                    },
+                    "S_IRWXG": {
+                        "value": 56,
+                        "desc": "Group read, write, execute"
+                    },
+                    "S_IRWXO": {
+                        "value": 7,
+                        "desc": "Others read, write, execute"
+                    },
+                    "S_IRUSR": {
+                        "value": 256,
+                        "desc": "User read permission"
+                    },
+                    "S_IXUSR": {
+                        "value": 64,
+                        "desc": "User execute permission"
+                    },
+                    "S_IWOTH": {
+                        "value": 2,
+                        "desc": "Others write permission"
+                    },
+                    "S_IRGRP": {
+                        "value": 32,
+                        "desc": "Group read permission"
+                    },
+                    "S_IXGRP": {
+                        "value": 8,
+                        "desc": "Group execute permission"
+                    },
+                    "S_IROTH": {
+                        "value": 4,
+                        "desc": "Others read permission"
+                    },
                     "S_IREAD": 256,
                     "S_IWRITE": 128
                 }
@@ -1456,18 +2563,54 @@
                 "type": "mode_t",
                 "param_index": 1,
                 "flags": {
-                    "S_IXOTH": 1,
-                    "S_IRWXU": 448,
-                    "S_IWGRP": 16,
-                    "S_IWUSR": 128,
-                    "S_IRWXG": 56,
-                    "S_IRWXO": 7,
-                    "S_IRUSR": 256,
-                    "S_IXUSR": 64,
-                    "S_IWOTH": 2,
-                    "S_IRGRP": 32,
-                    "S_IXGRP": 8,
-                    "S_IROTH": 4,
+                    "S_IXOTH": {
+                        "value": 1,
+                        "desc": "Others execute permission"
+                    },
+                    "S_IRWXU": {
+                        "value": 448,
+                        "desc": "User read, write, execute"
+                    },
+                    "S_IWGRP": {
+                        "value": 16,
+                        "desc": "Group write permission"
+                    },
+                    "S_IWUSR": {
+                        "value": 128,
+                        "desc": "User write permission"
+                    },
+                    "S_IRWXG": {
+                        "value": 56,
+                        "desc": "Group read, write, execute"
+                    },
+                    "S_IRWXO": {
+                        "value": 7,
+                        "desc": "Others read, write, execute"
+                    },
+                    "S_IRUSR": {
+                        "value": 256,
+                        "desc": "User read permission"
+                    },
+                    "S_IXUSR": {
+                        "value": 64,
+                        "desc": "User execute permission"
+                    },
+                    "S_IWOTH": {
+                        "value": 2,
+                        "desc": "Others write permission"
+                    },
+                    "S_IRGRP": {
+                        "value": 32,
+                        "desc": "Group read permission"
+                    },
+                    "S_IXGRP": {
+                        "value": 8,
+                        "desc": "Group execute permission"
+                    },
+                    "S_IROTH": {
+                        "value": 4,
+                        "desc": "Others read permission"
+                    },
                     "S_IREAD": 256,
                     "S_IWRITE": 128
                 }
@@ -1482,18 +2625,54 @@
                 "type": "mode_t",
                 "param_index": 0,
                 "flags": {
-                    "S_IXOTH": 1,
-                    "S_IRWXU": 448,
-                    "S_IWGRP": 16,
-                    "S_IWUSR": 128,
-                    "S_IRWXG": 56,
-                    "S_IRWXO": 7,
-                    "S_IRUSR": 256,
-                    "S_IXUSR": 64,
-                    "S_IWOTH": 2,
-                    "S_IRGRP": 32,
-                    "S_IXGRP": 8,
-                    "S_IROTH": 4,
+                    "S_IXOTH": {
+                        "value": 1,
+                        "desc": "Others execute permission"
+                    },
+                    "S_IRWXU": {
+                        "value": 448,
+                        "desc": "User read, write, execute"
+                    },
+                    "S_IWGRP": {
+                        "value": 16,
+                        "desc": "Group write permission"
+                    },
+                    "S_IWUSR": {
+                        "value": 128,
+                        "desc": "User write permission"
+                    },
+                    "S_IRWXG": {
+                        "value": 56,
+                        "desc": "Group read, write, execute"
+                    },
+                    "S_IRWXO": {
+                        "value": 7,
+                        "desc": "Others read, write, execute"
+                    },
+                    "S_IRUSR": {
+                        "value": 256,
+                        "desc": "User read permission"
+                    },
+                    "S_IXUSR": {
+                        "value": 64,
+                        "desc": "User execute permission"
+                    },
+                    "S_IWOTH": {
+                        "value": 2,
+                        "desc": "Others write permission"
+                    },
+                    "S_IRGRP": {
+                        "value": 32,
+                        "desc": "Group read permission"
+                    },
+                    "S_IXGRP": {
+                        "value": 8,
+                        "desc": "Group execute permission"
+                    },
+                    "S_IROTH": {
+                        "value": 4,
+                        "desc": "Others read permission"
+                    },
                     "S_IREAD": 256,
                     "S_IWRITE": 128
                 }
@@ -1508,7 +2687,10 @@
                 "type": "int",
                 "param_index": 0,
                 "flags": {
-                    "AT_FDCWD": -100
+                    "AT_FDCWD": {
+                        "value": -100,
+                        "desc": "Use current working directory"
+                    }
                 }
             },
             "1": {
@@ -1521,11 +2703,23 @@
                 "type": "int",
                 "param_index": 2,
                 "flags": {
-                    "AT_SYMLINK_NOFOLLOW": 256,
-                    "AT_SYMLINK_FOLLOW": 1024,
-                    "AT_REMOVEDIR": 512,
+                    "AT_SYMLINK_NOFOLLOW": {
+                        "value": 256,
+                        "desc": "Do not follow symlinks"
+                    },
+                    "AT_SYMLINK_FOLLOW": {
+                        "value": 1024,
+                        "desc": "Follow symlink"
+                    },
+                    "AT_REMOVEDIR": {
+                        "value": 512,
+                        "desc": "Remove directory instead of file"
+                    },
                     "AT_EACCESS": 512,
-                    "AT_STATX_SYNC_AS_STAT": 0,
+                    "AT_STATX_SYNC_AS_STAT": {
+                        "value": 0,
+                        "desc": "Stat-like sync behavior"
+                    },
                     "AT_EXECVE_CHECK": 65536,
                     "AT_RENAME_WHITEOUT": 4,
                     "AT_HANDLE_MNT_ID_UNIQUE": 1,
@@ -1533,12 +2727,24 @@
                     "AT_RECURSIVE": 32768,
                     "AT_HANDLE_CONNECTABLE": 2,
                     "AT_HANDLE_FID": 512,
-                    "AT_NO_AUTOMOUNT": 2048,
-                    "AT_STATX_FORCE_SYNC": 8192,
-                    "AT_STATX_DONT_SYNC": 16384,
+                    "AT_NO_AUTOMOUNT": {
+                        "value": 2048,
+                        "desc": "Suppress terminal automount"
+                    },
+                    "AT_STATX_FORCE_SYNC": {
+                        "value": 8192,
+                        "desc": "Force sync attributes with server"
+                    },
+                    "AT_STATX_DONT_SYNC": {
+                        "value": 16384,
+                        "desc": "Do not sync attributes with server"
+                    },
                     "AT_STATX_SYNC_TYPE": 24576,
                     "AT_RENAME_EXCHANGE": 2,
-                    "AT_EMPTY_PATH": 4096
+                    "AT_EMPTY_PATH": {
+                        "value": 4096,
+                        "desc": "Allow empty path string"
+                    }
                 }
             },
             "3": {
@@ -1604,11 +2810,26 @@
                 "type": "int",
                 "param_index": 2,
                 "flags": {
-                    "SEEK_CUR": 1,
-                    "SEEK_SET": 0,
-                    "SEEK_END": 2,
-                    "SEEK_DATA": 3,
-                    "SEEK_HOLE": 4,
+                    "SEEK_CUR": {
+                        "value": 1,
+                        "desc": "Seek from current position"
+                    },
+                    "SEEK_SET": {
+                        "value": 0,
+                        "desc": "Seek from beginning of file"
+                    },
+                    "SEEK_END": {
+                        "value": 2,
+                        "desc": "Seek from end of file"
+                    },
+                    "SEEK_DATA": {
+                        "value": 3,
+                        "desc": "Seek to next data"
+                    },
+                    "SEEK_HOLE": {
+                        "value": 4,
+                        "desc": "Seek to next hole"
+                    },
                     "SEEK_MAX": 4
                 }
             }
@@ -1631,25 +2852,61 @@
                     "F_GETOWN_EX": 16,
                     "F_OWNER_PID": 1,
                     "F_OWNER_PGRP": 2,
-                    "F_DUPFD": 0,
+                    "F_DUPFD": {
+                        "value": 0,
+                        "desc": "Duplicate file descriptor"
+                    },
                     "F_GETOWNER_UIDS": 17,
                     "F_UNLCK": 2,
                     "F_SHLCK": 8,
-                    "F_GETFD": 1,
-                    "F_GETFL": 3,
-                    "F_GETLK": 5,
-                    "F_GETSIG": 11,
+                    "F_GETFD": {
+                        "value": 1,
+                        "desc": "Get file descriptor flags"
+                    },
+                    "F_GETFL": {
+                        "value": 3,
+                        "desc": "Get file status flags"
+                    },
+                    "F_GETLK": {
+                        "value": 5,
+                        "desc": "Get record locking info"
+                    },
+                    "F_GETSIG": {
+                        "value": 11,
+                        "desc": "Get signal sent on I/O availability"
+                    },
                     "F_WRLCK": 1,
                     "F_OFD_GETLK": 36,
-                    "F_SETFD": 2,
-                    "F_SETFL": 4,
-                    "F_GETOWN": 9,
-                    "F_SETLK": 6,
-                    "F_SETOWN": 8,
+                    "F_SETFD": {
+                        "value": 2,
+                        "desc": "Set file descriptor flags"
+                    },
+                    "F_SETFL": {
+                        "value": 4,
+                        "desc": "Set file status flags"
+                    },
+                    "F_GETOWN": {
+                        "value": 9,
+                        "desc": "Get process/pgrp receiving SIGIO"
+                    },
+                    "F_SETLK": {
+                        "value": 6,
+                        "desc": "Set record locking info"
+                    },
+                    "F_SETOWN": {
+                        "value": 8,
+                        "desc": "Set process/pgrp receiving SIGIO"
+                    },
                     "F_OWNER_TID": 0,
-                    "F_SETSIG": 10,
+                    "F_SETSIG": {
+                        "value": 10,
+                        "desc": "Set signal sent on I/O availability"
+                    },
                     "F_OFD_SETLK": 37,
-                    "F_SETLKW": 7,
+                    "F_SETLKW": {
+                        "value": 7,
+                        "desc": "Set record locking info (blocking)"
+                    },
                     "F_LINUX_SPECIFIC_BASE": 1024,
                     "F_OFD_SETLKW": 38,
                     "F_EXLCK": 4,
@@ -1668,7 +2925,10 @@
                     "F_SEAL_SHRINK": 2,
                     "F_SEAL_EXEC": 32,
                     "F_SEAL_GROW": 4,
-                    "F_DUPFD_CLOEXEC": 1030,
+                    "F_DUPFD_CLOEXEC": {
+                        "value": 1030,
+                        "desc": "Duplicate fd with close-on-exec"
+                    },
                     "F_GETPIPE_SZ": 1032,
                     "F_DUPFD_QUERY": 1027,
                     "F_GETDELEG": 1039,
@@ -1698,9 +2958,15 @@
                     "LOCK_SH": 1,
                     "LOCK_READ": 64,
                     "LOCK_WRITE": 128,
-                    "O_RDONLY": 0,
+                    "O_RDONLY": {
+                        "value": 0,
+                        "desc": "Open read-only"
+                    },
                     "LOCK_MAND": 32,
-                    "FD_CLOEXEC": 1,
+                    "FD_CLOEXEC": {
+                        "value": 1,
+                        "desc": "Close-on-exec flag"
+                    },
                     "LOCK_UN": 8,
                     "F_SEAL_FUTURE_WRITE": 16,
                     "F_SEAL_WRITE": 8,
@@ -1708,26 +2974,86 @@
                     "F_SEAL_SHRINK": 2,
                     "F_SEAL_EXEC": 32,
                     "F_SEAL_GROW": 4,
-                    "O_NOCTTY": 256,
-                    "O_EXCL": 128,
-                    "O_DSYNC": 4096,
-                    "O_NONBLOCK": 2048,
-                    "O_APPEND": 1024,
-                    "O_WRONLY": 1,
-                    "O_RDWR": 2,
-                    "O_EMPTYPATH": 67108864,
-                    "O_NOATIME": 262144,
-                    "O_SYNC": 1052672,
-                    "O_CLOEXEC": 524288,
-                    "O_CREAT": 64,
-                    "O_LARGEFILE": 32768,
-                    "O_TRUNC": 512,
-                    "O_NOFOLLOW": 131072,
-                    "O_DIRECTORY": 65536,
-                    "O_DIRECT": 16384,
-                    "O_PATH": 2097152,
-                    "O_ASYNC": 8192,
-                    "O_TMPFILE": 4259840
+                    "O_NOCTTY": {
+                        "value": 256,
+                        "desc": "Do not assign controlling tty"
+                    },
+                    "O_EXCL": {
+                        "value": 128,
+                        "desc": "Exclusive creation error if exists"
+                    },
+                    "O_DSYNC": {
+                        "value": 4096,
+                        "desc": "Synchronize data only"
+                    },
+                    "O_NONBLOCK": {
+                        "value": 2048,
+                        "desc": "Non-blocking I/O mode"
+                    },
+                    "O_APPEND": {
+                        "value": 1024,
+                        "desc": "Append writes to end of file"
+                    },
+                    "O_WRONLY": {
+                        "value": 1,
+                        "desc": "Open write-only"
+                    },
+                    "O_RDWR": {
+                        "value": 2,
+                        "desc": "Open read/write"
+                    },
+                    "O_EMPTYPATH": {
+                        "value": 67108864,
+                        "desc": "Allow empty path"
+                    },
+                    "O_NOATIME": {
+                        "value": 262144,
+                        "desc": "Do not update access time"
+                    },
+                    "O_SYNC": {
+                        "value": 1052672,
+                        "desc": "Synchronous writes"
+                    },
+                    "O_CLOEXEC": {
+                        "value": 524288,
+                        "desc": "Close file descriptor on exec"
+                    },
+                    "O_CREAT": {
+                        "value": 64,
+                        "desc": "Create file if nonexistent"
+                    },
+                    "O_LARGEFILE": {
+                        "value": 32768,
+                        "desc": "Allow files > 2GB"
+                    },
+                    "O_TRUNC": {
+                        "value": 512,
+                        "desc": "Truncate file length to 0"
+                    },
+                    "O_NOFOLLOW": {
+                        "value": 131072,
+                        "desc": "Do not follow symlinks"
+                    },
+                    "O_DIRECTORY": {
+                        "value": 65536,
+                        "desc": "Must be a directory"
+                    },
+                    "O_DIRECT": {
+                        "value": 16384,
+                        "desc": "Direct I/O bypassing page cache"
+                    },
+                    "O_PATH": {
+                        "value": 2097152,
+                        "desc": "Open for path resolution only"
+                    },
+                    "O_ASYNC": {
+                        "value": 8192,
+                        "desc": "Signal-driven I/O"
+                    },
+                    "O_TMPFILE": {
+                        "value": 4259840,
+                        "desc": "Create unnamed temporary file"
+                    }
                 }
             }
         }
@@ -1806,10 +3132,22 @@
                 "type": "int",
                 "param_index": 1,
                 "flags": {
-                    "O_NONBLOCK": 2048,
-                    "O_CLOEXEC": 524288,
-                    "O_DIRECTORY": 65536,
-                    "O_DIRECT": 16384
+                    "O_NONBLOCK": {
+                        "value": 2048,
+                        "desc": "Non-blocking I/O mode"
+                    },
+                    "O_CLOEXEC": {
+                        "value": 524288,
+                        "desc": "Close file descriptor on exec"
+                    },
+                    "O_DIRECTORY": {
+                        "value": 65536,
+                        "desc": "Must be a directory"
+                    },
+                    "O_DIRECT": {
+                        "value": 16384,
+                        "desc": "Direct I/O bypassing page cache"
+                    }
                 }
             }
         }
@@ -1832,7 +3170,10 @@
                 "type": "int",
                 "param_index": 2,
                 "flags": {
-                    "O_CLOEXEC": 524288
+                    "O_CLOEXEC": {
+                        "value": 524288,
+                        "desc": "Close file descriptor on exec"
+                    }
                 }
             }
         }
@@ -1901,15 +3242,15 @@
                 "type": "int",
                 "param_index": 1,
                 "flags": {
-                    "SOCK_SEQPACKET": 5,
-                    "SOCK_PACKET": 10,
-                    "SOCK_DCCP": 6,
-                    "SOCK_STREAM": 1,
+                    "SOCK_RDM": 4,
                     "SOCK_RAW": 3,
-                    "SOCK_CLOEXEC": 524288,
+                    "SOCK_STREAM": 1,
+                    "SOCK_DCCP": 6,
                     "SOCK_DGRAM": 2,
                     "SOCK_NONBLOCK": 2048,
-                    "SOCK_RDM": 4
+                    "SOCK_SEQPACKET": 5,
+                    "SOCK_PACKET": 10,
+                    "SOCK_CLOEXEC": 524288
                 }
             },
             "2": {
@@ -1983,15 +3324,15 @@
                 "type": "int",
                 "param_index": 1,
                 "flags": {
-                    "SOCK_SEQPACKET": 5,
-                    "SOCK_PACKET": 10,
-                    "SOCK_DCCP": 6,
-                    "SOCK_STREAM": 1,
+                    "SOCK_RDM": 4,
                     "SOCK_RAW": 3,
-                    "SOCK_CLOEXEC": 524288,
+                    "SOCK_STREAM": 1,
+                    "SOCK_DCCP": 6,
                     "SOCK_DGRAM": 2,
                     "SOCK_NONBLOCK": 2048,
-                    "SOCK_RDM": 4
+                    "SOCK_SEQPACKET": 5,
+                    "SOCK_PACKET": 10,
+                    "SOCK_CLOEXEC": 524288
                 }
             },
             "2": {
@@ -2029,28 +3370,28 @@
                 "type": "unsigned int",
                 "param_index": 3,
                 "flags": {
-                    "MSG_PROXY": 16,
-                    "MSG_DONTROUTE": 4,
-                    "MSG_SOCK_DEVMEM": 33554432,
-                    "MSG_WAITFORONE": 65536,
                     "MSG_CONFIRM": 2048,
-                    "MSG_SYN": 1024,
                     "MSG_WAITALL": 256,
-                    "MSG_TRUNC": 32,
-                    "MSG_FASTOPEN": 536870912,
                     "MSG_EOR": 128,
-                    "MSG_PEEK": 2,
-                    "MSG_RST": 4096,
-                    "MSG_MORE": 32768,
-                    "MSG_CTRUNC": 8,
                     "MSG_BATCH": 262144,
-                    "MSG_NOSIGNAL": 16384,
+                    "MSG_TRUNC": 32,
                     "MSG_ZEROCOPY": 67108864,
-                    "MSG_FIN": 512,
                     "MSG_ERRQUEUE": 8192,
+                    "MSG_FASTOPEN": 536870912,
+                    "MSG_PROXY": 16,
                     "MSG_DONTWAIT": 64,
-                    "MSG_OOB": 1,
-                    "MSG_CMSG_CLOEXEC": 1073741824
+                    "MSG_SOCK_DEVMEM": 33554432,
+                    "MSG_MORE": 32768,
+                    "MSG_RST": 4096,
+                    "MSG_CTRUNC": 8,
+                    "MSG_PEEK": 2,
+                    "MSG_FIN": 512,
+                    "MSG_NOSIGNAL": 16384,
+                    "MSG_DONTROUTE": 4,
+                    "MSG_CMSG_CLOEXEC": 1073741824,
+                    "MSG_SYN": 1024,
+                    "MSG_WAITFORONE": 65536,
+                    "MSG_OOB": 1
                 }
             },
             "4": {
@@ -2083,28 +3424,28 @@
                 "type": "unsigned int",
                 "param_index": 2,
                 "flags": {
-                    "MSG_PROXY": 16,
-                    "MSG_DONTROUTE": 4,
-                    "MSG_SOCK_DEVMEM": 33554432,
-                    "MSG_WAITFORONE": 65536,
                     "MSG_CONFIRM": 2048,
-                    "MSG_SYN": 1024,
                     "MSG_WAITALL": 256,
-                    "MSG_TRUNC": 32,
-                    "MSG_FASTOPEN": 536870912,
                     "MSG_EOR": 128,
-                    "MSG_PEEK": 2,
-                    "MSG_RST": 4096,
-                    "MSG_MORE": 32768,
-                    "MSG_CTRUNC": 8,
                     "MSG_BATCH": 262144,
-                    "MSG_NOSIGNAL": 16384,
+                    "MSG_TRUNC": 32,
                     "MSG_ZEROCOPY": 67108864,
-                    "MSG_FIN": 512,
                     "MSG_ERRQUEUE": 8192,
+                    "MSG_FASTOPEN": 536870912,
+                    "MSG_PROXY": 16,
                     "MSG_DONTWAIT": 64,
-                    "MSG_OOB": 1,
-                    "MSG_CMSG_CLOEXEC": 1073741824
+                    "MSG_SOCK_DEVMEM": 33554432,
+                    "MSG_MORE": 32768,
+                    "MSG_RST": 4096,
+                    "MSG_CTRUNC": 8,
+                    "MSG_PEEK": 2,
+                    "MSG_FIN": 512,
+                    "MSG_NOSIGNAL": 16384,
+                    "MSG_DONTROUTE": 4,
+                    "MSG_CMSG_CLOEXEC": 1073741824,
+                    "MSG_SYN": 1024,
+                    "MSG_WAITFORONE": 65536,
+                    "MSG_OOB": 1
                 }
             }
         }
@@ -2132,28 +3473,28 @@
                 "type": "unsigned int",
                 "param_index": 3,
                 "flags": {
-                    "MSG_PROXY": 16,
-                    "MSG_DONTROUTE": 4,
-                    "MSG_SOCK_DEVMEM": 33554432,
-                    "MSG_WAITFORONE": 65536,
                     "MSG_CONFIRM": 2048,
-                    "MSG_SYN": 1024,
                     "MSG_WAITALL": 256,
-                    "MSG_TRUNC": 32,
-                    "MSG_FASTOPEN": 536870912,
                     "MSG_EOR": 128,
-                    "MSG_PEEK": 2,
-                    "MSG_RST": 4096,
-                    "MSG_MORE": 32768,
-                    "MSG_CTRUNC": 8,
                     "MSG_BATCH": 262144,
-                    "MSG_NOSIGNAL": 16384,
+                    "MSG_TRUNC": 32,
                     "MSG_ZEROCOPY": 67108864,
-                    "MSG_FIN": 512,
                     "MSG_ERRQUEUE": 8192,
+                    "MSG_FASTOPEN": 536870912,
+                    "MSG_PROXY": 16,
                     "MSG_DONTWAIT": 64,
-                    "MSG_OOB": 1,
-                    "MSG_CMSG_CLOEXEC": 1073741824
+                    "MSG_SOCK_DEVMEM": 33554432,
+                    "MSG_MORE": 32768,
+                    "MSG_RST": 4096,
+                    "MSG_CTRUNC": 8,
+                    "MSG_PEEK": 2,
+                    "MSG_FIN": 512,
+                    "MSG_NOSIGNAL": 16384,
+                    "MSG_DONTROUTE": 4,
+                    "MSG_CMSG_CLOEXEC": 1073741824,
+                    "MSG_SYN": 1024,
+                    "MSG_WAITFORONE": 65536,
+                    "MSG_OOB": 1
                 }
             }
         }
@@ -2181,28 +3522,28 @@
                 "type": "unsigned int",
                 "param_index": 3,
                 "flags": {
-                    "MSG_PROXY": 16,
-                    "MSG_DONTROUTE": 4,
-                    "MSG_SOCK_DEVMEM": 33554432,
-                    "MSG_WAITFORONE": 65536,
                     "MSG_CONFIRM": 2048,
-                    "MSG_SYN": 1024,
                     "MSG_WAITALL": 256,
-                    "MSG_TRUNC": 32,
-                    "MSG_FASTOPEN": 536870912,
                     "MSG_EOR": 128,
-                    "MSG_PEEK": 2,
-                    "MSG_RST": 4096,
-                    "MSG_MORE": 32768,
-                    "MSG_CTRUNC": 8,
                     "MSG_BATCH": 262144,
-                    "MSG_NOSIGNAL": 16384,
+                    "MSG_TRUNC": 32,
                     "MSG_ZEROCOPY": 67108864,
-                    "MSG_FIN": 512,
                     "MSG_ERRQUEUE": 8192,
+                    "MSG_FASTOPEN": 536870912,
+                    "MSG_PROXY": 16,
                     "MSG_DONTWAIT": 64,
-                    "MSG_OOB": 1,
-                    "MSG_CMSG_CLOEXEC": 1073741824
+                    "MSG_SOCK_DEVMEM": 33554432,
+                    "MSG_MORE": 32768,
+                    "MSG_RST": 4096,
+                    "MSG_CTRUNC": 8,
+                    "MSG_PEEK": 2,
+                    "MSG_FIN": 512,
+                    "MSG_NOSIGNAL": 16384,
+                    "MSG_DONTROUTE": 4,
+                    "MSG_CMSG_CLOEXEC": 1073741824,
+                    "MSG_SYN": 1024,
+                    "MSG_WAITFORONE": 65536,
+                    "MSG_OOB": 1
                 }
             },
             "4": {
@@ -2235,28 +3576,28 @@
                 "type": "unsigned int",
                 "param_index": 2,
                 "flags": {
-                    "MSG_PROXY": 16,
-                    "MSG_DONTROUTE": 4,
-                    "MSG_SOCK_DEVMEM": 33554432,
-                    "MSG_WAITFORONE": 65536,
                     "MSG_CONFIRM": 2048,
-                    "MSG_SYN": 1024,
                     "MSG_WAITALL": 256,
-                    "MSG_TRUNC": 32,
-                    "MSG_FASTOPEN": 536870912,
                     "MSG_EOR": 128,
-                    "MSG_PEEK": 2,
-                    "MSG_RST": 4096,
-                    "MSG_MORE": 32768,
-                    "MSG_CTRUNC": 8,
                     "MSG_BATCH": 262144,
-                    "MSG_NOSIGNAL": 16384,
+                    "MSG_TRUNC": 32,
                     "MSG_ZEROCOPY": 67108864,
-                    "MSG_FIN": 512,
                     "MSG_ERRQUEUE": 8192,
+                    "MSG_FASTOPEN": 536870912,
+                    "MSG_PROXY": 16,
                     "MSG_DONTWAIT": 64,
-                    "MSG_OOB": 1,
-                    "MSG_CMSG_CLOEXEC": 1073741824
+                    "MSG_SOCK_DEVMEM": 33554432,
+                    "MSG_MORE": 32768,
+                    "MSG_RST": 4096,
+                    "MSG_CTRUNC": 8,
+                    "MSG_PEEK": 2,
+                    "MSG_FIN": 512,
+                    "MSG_NOSIGNAL": 16384,
+                    "MSG_DONTROUTE": 4,
+                    "MSG_CMSG_CLOEXEC": 1073741824,
+                    "MSG_SYN": 1024,
+                    "MSG_WAITFORONE": 65536,
+                    "MSG_OOB": 1
                 }
             }
         }
@@ -2284,28 +3625,28 @@
                 "type": "unsigned int",
                 "param_index": 3,
                 "flags": {
-                    "MSG_PROXY": 16,
-                    "MSG_DONTROUTE": 4,
-                    "MSG_SOCK_DEVMEM": 33554432,
-                    "MSG_WAITFORONE": 65536,
                     "MSG_CONFIRM": 2048,
-                    "MSG_SYN": 1024,
                     "MSG_WAITALL": 256,
-                    "MSG_TRUNC": 32,
-                    "MSG_FASTOPEN": 536870912,
                     "MSG_EOR": 128,
-                    "MSG_PEEK": 2,
-                    "MSG_RST": 4096,
-                    "MSG_MORE": 32768,
-                    "MSG_CTRUNC": 8,
                     "MSG_BATCH": 262144,
-                    "MSG_NOSIGNAL": 16384,
+                    "MSG_TRUNC": 32,
                     "MSG_ZEROCOPY": 67108864,
-                    "MSG_FIN": 512,
                     "MSG_ERRQUEUE": 8192,
+                    "MSG_FASTOPEN": 536870912,
+                    "MSG_PROXY": 16,
                     "MSG_DONTWAIT": 64,
-                    "MSG_OOB": 1,
-                    "MSG_CMSG_CLOEXEC": 1073741824
+                    "MSG_SOCK_DEVMEM": 33554432,
+                    "MSG_MORE": 32768,
+                    "MSG_RST": 4096,
+                    "MSG_CTRUNC": 8,
+                    "MSG_PEEK": 2,
+                    "MSG_FIN": 512,
+                    "MSG_NOSIGNAL": 16384,
+                    "MSG_DONTROUTE": 4,
+                    "MSG_CMSG_CLOEXEC": 1073741824,
+                    "MSG_SYN": 1024,
+                    "MSG_WAITFORONE": 65536,
+                    "MSG_OOB": 1
                 }
             },
             "4": {
@@ -2343,7 +3684,10 @@
                 "type": "int",
                 "param_index": 0,
                 "flags": {
-                    "EPOLL_CLOEXEC": 524288
+                    "EPOLL_CLOEXEC": {
+                        "value": 524288,
+                        "desc": "Close epoll fd on exec"
+                    }
                 }
             }
         }
@@ -3046,9 +4390,18 @@
                 "type": "int",
                 "param_index": 2,
                 "flags": {
-                    "WUNTRACED": 2,
-                    "WCONTINUED": 8,
-                    "WNOHANG": 1,
+                    "WUNTRACED": {
+                        "value": 2,
+                        "desc": "Also return if a child has stopped"
+                    },
+                    "WCONTINUED": {
+                        "value": 8,
+                        "desc": "Also return if a stopped child has continued"
+                    },
+                    "WNOHANG": {
+                        "value": 1,
+                        "desc": "Return immediately if no child has exited"
+                    },
                     "__WCLONE": 2147483648,
                     "__WNOTHREAD": 536870912,
                     "__WALL": 1073741824
@@ -3090,9 +4443,15 @@
                 "type": "int",
                 "param_index": 3,
                 "flags": {
-                    "WCONTINUED": 8,
+                    "WCONTINUED": {
+                        "value": 8,
+                        "desc": "Also return if a stopped child has continued"
+                    },
                     "WEXITED": 4,
-                    "WNOHANG": 1,
+                    "WNOHANG": {
+                        "value": 1,
+                        "desc": "Return immediately if no child has exited"
+                    },
                     "WNOWAIT": 16777216,
                     "WSTOPPED": 2
                 }
@@ -3117,37 +4476,130 @@
                 "type": "int",
                 "param_index": 1,
                 "signals": {
-                    "SIGBUS": 7,
-                    "SIGTTIN": 21,
-                    "SIGPROF": 27,
-                    "SIGFPE": 8,
-                    "SIGSTKFLT": 16,
-                    "SIGUSR1": 10,
-                    "SIGTTOU": 22,
-                    "SIGURG": 23,
-                    "SIGQUIT": 3,
-                    "SIGABRT": 6,
-                    "SIGUSR2": 12,
-                    "SIGTRAP": 5,
-                    "SIGVTALRM": 26,
-                    "SIGSEGV": 11,
-                    "SIGCONT": 18,
-                    "SIGPIPE": 13,
-                    "SIGWINCH": 28,
-                    "SIGXFSZ": 25,
-                    "SIGCHLD": 17,
-                    "SIGSTOP": 19,
-                    "SIGSYS": 31,
-                    "SIGALRM": 14,
-                    "SIGTSTP": 20,
-                    "SIGKILL": 9,
-                    "SIGXCPU": 24,
-                    "SIGPWR": 30,
-                    "SIGILL": 4,
-                    "SIGINT": 2,
-                    "SIGTERM": 15,
-                    "SIGHUP": 1,
-                    "SIGIO": 29
+                    "SIGBUS": {
+                        "value": 7,
+                        "desc": "Memory bus error"
+                    },
+                    "SIGTTIN": {
+                        "value": 21,
+                        "desc": "Background read from tty"
+                    },
+                    "SIGPROF": {
+                        "value": 27,
+                        "desc": "Profiling timer expired"
+                    },
+                    "SIGFPE": {
+                        "value": 8,
+                        "desc": "Floating point exception"
+                    },
+                    "SIGSTKFLT": {
+                        "value": 16,
+                        "desc": "Stack fault on coprocessor"
+                    },
+                    "SIGUSR1": {
+                        "value": 10,
+                        "desc": "User-defined signal 1"
+                    },
+                    "SIGTTOU": {
+                        "value": 22,
+                        "desc": "Background write to tty"
+                    },
+                    "SIGURG": {
+                        "value": 23,
+                        "desc": "Urgent socket condition"
+                    },
+                    "SIGQUIT": {
+                        "value": 3,
+                        "desc": "Terminal quit (Ctrl+\\)"
+                    },
+                    "SIGABRT": {
+                        "value": 6,
+                        "desc": "Process abort"
+                    },
+                    "SIGUSR2": {
+                        "value": 12,
+                        "desc": "User-defined signal 2"
+                    },
+                    "SIGTRAP": {
+                        "value": 5,
+                        "desc": "Trace/breakpoint trap"
+                    },
+                    "SIGVTALRM": {
+                        "value": 26,
+                        "desc": "Virtual timer expired"
+                    },
+                    "SIGSEGV": {
+                        "value": 11,
+                        "desc": "Segmentation fault"
+                    },
+                    "SIGCONT": {
+                        "value": 18,
+                        "desc": "Continue executing if stopped"
+                    },
+                    "SIGPIPE": {
+                        "value": 13,
+                        "desc": "Broken pipe"
+                    },
+                    "SIGWINCH": {
+                        "value": 28,
+                        "desc": "Window size changed"
+                    },
+                    "SIGXFSZ": {
+                        "value": 25,
+                        "desc": "File size limit exceeded"
+                    },
+                    "SIGCHLD": {
+                        "value": 17,
+                        "desc": "Child process status changed"
+                    },
+                    "SIGSTOP": {
+                        "value": 19,
+                        "desc": "Stop executing (uncatchable)"
+                    },
+                    "SIGSYS": {
+                        "value": 31,
+                        "desc": "Bad system call"
+                    },
+                    "SIGALRM": {
+                        "value": 14,
+                        "desc": "Alarm timer expired"
+                    },
+                    "SIGTSTP": {
+                        "value": 20,
+                        "desc": "Terminal stop signal (Ctrl+Z)"
+                    },
+                    "SIGKILL": {
+                        "value": 9,
+                        "desc": "Kill signal (uncatchable)"
+                    },
+                    "SIGXCPU": {
+                        "value": 24,
+                        "desc": "CPU time limit exceeded"
+                    },
+                    "SIGPWR": {
+                        "value": 30,
+                        "desc": "Power supply failure"
+                    },
+                    "SIGILL": {
+                        "value": 4,
+                        "desc": "Illegal instruction"
+                    },
+                    "SIGINT": {
+                        "value": 2,
+                        "desc": "Terminal interrupt (Ctrl+C)"
+                    },
+                    "SIGTERM": {
+                        "value": 15,
+                        "desc": "Termination signal"
+                    },
+                    "SIGHUP": {
+                        "value": 1,
+                        "desc": "Terminal hangup"
+                    },
+                    "SIGIO": {
+                        "value": 29,
+                        "desc": "I/O now possible"
+                    }
                 }
             }
         }
@@ -3165,37 +4617,130 @@
                 "type": "int",
                 "param_index": 1,
                 "signals": {
-                    "SIGBUS": 7,
-                    "SIGTTIN": 21,
-                    "SIGPROF": 27,
-                    "SIGFPE": 8,
-                    "SIGSTKFLT": 16,
-                    "SIGUSR1": 10,
-                    "SIGTTOU": 22,
-                    "SIGURG": 23,
-                    "SIGQUIT": 3,
-                    "SIGABRT": 6,
-                    "SIGUSR2": 12,
-                    "SIGTRAP": 5,
-                    "SIGVTALRM": 26,
-                    "SIGSEGV": 11,
-                    "SIGCONT": 18,
-                    "SIGPIPE": 13,
-                    "SIGWINCH": 28,
-                    "SIGXFSZ": 25,
-                    "SIGCHLD": 17,
-                    "SIGSTOP": 19,
-                    "SIGSYS": 31,
-                    "SIGALRM": 14,
-                    "SIGTSTP": 20,
-                    "SIGKILL": 9,
-                    "SIGXCPU": 24,
-                    "SIGPWR": 30,
-                    "SIGILL": 4,
-                    "SIGINT": 2,
-                    "SIGTERM": 15,
-                    "SIGHUP": 1,
-                    "SIGIO": 29
+                    "SIGBUS": {
+                        "value": 7,
+                        "desc": "Memory bus error"
+                    },
+                    "SIGTTIN": {
+                        "value": 21,
+                        "desc": "Background read from tty"
+                    },
+                    "SIGPROF": {
+                        "value": 27,
+                        "desc": "Profiling timer expired"
+                    },
+                    "SIGFPE": {
+                        "value": 8,
+                        "desc": "Floating point exception"
+                    },
+                    "SIGSTKFLT": {
+                        "value": 16,
+                        "desc": "Stack fault on coprocessor"
+                    },
+                    "SIGUSR1": {
+                        "value": 10,
+                        "desc": "User-defined signal 1"
+                    },
+                    "SIGTTOU": {
+                        "value": 22,
+                        "desc": "Background write to tty"
+                    },
+                    "SIGURG": {
+                        "value": 23,
+                        "desc": "Urgent socket condition"
+                    },
+                    "SIGQUIT": {
+                        "value": 3,
+                        "desc": "Terminal quit (Ctrl+\\)"
+                    },
+                    "SIGABRT": {
+                        "value": 6,
+                        "desc": "Process abort"
+                    },
+                    "SIGUSR2": {
+                        "value": 12,
+                        "desc": "User-defined signal 2"
+                    },
+                    "SIGTRAP": {
+                        "value": 5,
+                        "desc": "Trace/breakpoint trap"
+                    },
+                    "SIGVTALRM": {
+                        "value": 26,
+                        "desc": "Virtual timer expired"
+                    },
+                    "SIGSEGV": {
+                        "value": 11,
+                        "desc": "Segmentation fault"
+                    },
+                    "SIGCONT": {
+                        "value": 18,
+                        "desc": "Continue executing if stopped"
+                    },
+                    "SIGPIPE": {
+                        "value": 13,
+                        "desc": "Broken pipe"
+                    },
+                    "SIGWINCH": {
+                        "value": 28,
+                        "desc": "Window size changed"
+                    },
+                    "SIGXFSZ": {
+                        "value": 25,
+                        "desc": "File size limit exceeded"
+                    },
+                    "SIGCHLD": {
+                        "value": 17,
+                        "desc": "Child process status changed"
+                    },
+                    "SIGSTOP": {
+                        "value": 19,
+                        "desc": "Stop executing (uncatchable)"
+                    },
+                    "SIGSYS": {
+                        "value": 31,
+                        "desc": "Bad system call"
+                    },
+                    "SIGALRM": {
+                        "value": 14,
+                        "desc": "Alarm timer expired"
+                    },
+                    "SIGTSTP": {
+                        "value": 20,
+                        "desc": "Terminal stop signal (Ctrl+Z)"
+                    },
+                    "SIGKILL": {
+                        "value": 9,
+                        "desc": "Kill signal (uncatchable)"
+                    },
+                    "SIGXCPU": {
+                        "value": 24,
+                        "desc": "CPU time limit exceeded"
+                    },
+                    "SIGPWR": {
+                        "value": 30,
+                        "desc": "Power supply failure"
+                    },
+                    "SIGILL": {
+                        "value": 4,
+                        "desc": "Illegal instruction"
+                    },
+                    "SIGINT": {
+                        "value": 2,
+                        "desc": "Terminal interrupt (Ctrl+C)"
+                    },
+                    "SIGTERM": {
+                        "value": 15,
+                        "desc": "Termination signal"
+                    },
+                    "SIGHUP": {
+                        "value": 1,
+                        "desc": "Terminal hangup"
+                    },
+                    "SIGIO": {
+                        "value": 29,
+                        "desc": "I/O now possible"
+                    }
                 }
             }
         }
@@ -3218,37 +4763,130 @@
                 "type": "int",
                 "param_index": 2,
                 "signals": {
-                    "SIGBUS": 7,
-                    "SIGTTIN": 21,
-                    "SIGPROF": 27,
-                    "SIGFPE": 8,
-                    "SIGSTKFLT": 16,
-                    "SIGUSR1": 10,
-                    "SIGTTOU": 22,
-                    "SIGURG": 23,
-                    "SIGQUIT": 3,
-                    "SIGABRT": 6,
-                    "SIGUSR2": 12,
-                    "SIGTRAP": 5,
-                    "SIGVTALRM": 26,
-                    "SIGSEGV": 11,
-                    "SIGCONT": 18,
-                    "SIGPIPE": 13,
-                    "SIGWINCH": 28,
-                    "SIGXFSZ": 25,
-                    "SIGCHLD": 17,
-                    "SIGSTOP": 19,
-                    "SIGSYS": 31,
-                    "SIGALRM": 14,
-                    "SIGTSTP": 20,
-                    "SIGKILL": 9,
-                    "SIGXCPU": 24,
-                    "SIGPWR": 30,
-                    "SIGILL": 4,
-                    "SIGINT": 2,
-                    "SIGTERM": 15,
-                    "SIGHUP": 1,
-                    "SIGIO": 29
+                    "SIGBUS": {
+                        "value": 7,
+                        "desc": "Memory bus error"
+                    },
+                    "SIGTTIN": {
+                        "value": 21,
+                        "desc": "Background read from tty"
+                    },
+                    "SIGPROF": {
+                        "value": 27,
+                        "desc": "Profiling timer expired"
+                    },
+                    "SIGFPE": {
+                        "value": 8,
+                        "desc": "Floating point exception"
+                    },
+                    "SIGSTKFLT": {
+                        "value": 16,
+                        "desc": "Stack fault on coprocessor"
+                    },
+                    "SIGUSR1": {
+                        "value": 10,
+                        "desc": "User-defined signal 1"
+                    },
+                    "SIGTTOU": {
+                        "value": 22,
+                        "desc": "Background write to tty"
+                    },
+                    "SIGURG": {
+                        "value": 23,
+                        "desc": "Urgent socket condition"
+                    },
+                    "SIGQUIT": {
+                        "value": 3,
+                        "desc": "Terminal quit (Ctrl+\\)"
+                    },
+                    "SIGABRT": {
+                        "value": 6,
+                        "desc": "Process abort"
+                    },
+                    "SIGUSR2": {
+                        "value": 12,
+                        "desc": "User-defined signal 2"
+                    },
+                    "SIGTRAP": {
+                        "value": 5,
+                        "desc": "Trace/breakpoint trap"
+                    },
+                    "SIGVTALRM": {
+                        "value": 26,
+                        "desc": "Virtual timer expired"
+                    },
+                    "SIGSEGV": {
+                        "value": 11,
+                        "desc": "Segmentation fault"
+                    },
+                    "SIGCONT": {
+                        "value": 18,
+                        "desc": "Continue executing if stopped"
+                    },
+                    "SIGPIPE": {
+                        "value": 13,
+                        "desc": "Broken pipe"
+                    },
+                    "SIGWINCH": {
+                        "value": 28,
+                        "desc": "Window size changed"
+                    },
+                    "SIGXFSZ": {
+                        "value": 25,
+                        "desc": "File size limit exceeded"
+                    },
+                    "SIGCHLD": {
+                        "value": 17,
+                        "desc": "Child process status changed"
+                    },
+                    "SIGSTOP": {
+                        "value": 19,
+                        "desc": "Stop executing (uncatchable)"
+                    },
+                    "SIGSYS": {
+                        "value": 31,
+                        "desc": "Bad system call"
+                    },
+                    "SIGALRM": {
+                        "value": 14,
+                        "desc": "Alarm timer expired"
+                    },
+                    "SIGTSTP": {
+                        "value": 20,
+                        "desc": "Terminal stop signal (Ctrl+Z)"
+                    },
+                    "SIGKILL": {
+                        "value": 9,
+                        "desc": "Kill signal (uncatchable)"
+                    },
+                    "SIGXCPU": {
+                        "value": 24,
+                        "desc": "CPU time limit exceeded"
+                    },
+                    "SIGPWR": {
+                        "value": 30,
+                        "desc": "Power supply failure"
+                    },
+                    "SIGILL": {
+                        "value": 4,
+                        "desc": "Illegal instruction"
+                    },
+                    "SIGINT": {
+                        "value": 2,
+                        "desc": "Terminal interrupt (Ctrl+C)"
+                    },
+                    "SIGTERM": {
+                        "value": 15,
+                        "desc": "Termination signal"
+                    },
+                    "SIGHUP": {
+                        "value": 1,
+                        "desc": "Terminal hangup"
+                    },
+                    "SIGIO": {
+                        "value": 29,
+                        "desc": "I/O now possible"
+                    }
                 }
             }
         }
@@ -3261,9 +4899,18 @@
                 "type": "int",
                 "param_index": 0,
                 "flags": {
-                    "SIG_SETMASK": 2,
-                    "SIG_BLOCK": 0,
-                    "SIG_UNBLOCK": 1
+                    "SIG_SETMASK": {
+                        "value": 2,
+                        "desc": "Set current signal mask"
+                    },
+                    "SIG_BLOCK": {
+                        "value": 0,
+                        "desc": "Add signals to current mask"
+                    },
+                    "SIG_UNBLOCK": {
+                        "value": 1,
+                        "desc": "Remove signals from current mask"
+                    }
                 }
             },
             "1": {
@@ -3306,32 +4953,98 @@
                 "type": "unsigned long",
                 "param_index": 3,
                 "flags": {
-                    "MS_NODEV": 4,
+                    "MS_NODEV": {
+                        "value": 4,
+                        "desc": "Disallow device access"
+                    },
                     "MS_NOSYMFOLLOW": 256,
-                    "MS_REMOUNT": 32,
-                    "MS_NOEXEC": 8,
-                    "MS_NODIRATIME": 2048,
-                    "MS_RDONLY": 1,
-                    "MS_NOSUID": 2,
-                    "MS_SILENT": 32768,
-                    "MS_MOVE": 8192,
-                    "MS_SYNCHRONOUS": 16,
-                    "MS_REC": 16384,
-                    "MS_NOATIME": 1024,
-                    "MS_DIRSYNC": 128,
-                    "MS_BIND": 4096,
-                    "MS_MANDLOCK": 64,
+                    "MS_REMOUNT": {
+                        "value": 32,
+                        "desc": "Alter existing mount flags"
+                    },
+                    "MS_NOEXEC": {
+                        "value": 8,
+                        "desc": "Disallow program execution"
+                    },
+                    "MS_NODIRATIME": {
+                        "value": 2048,
+                        "desc": "Do not update directory access times"
+                    },
+                    "MS_RDONLY": {
+                        "value": 1,
+                        "desc": "Mount read-only"
+                    },
+                    "MS_NOSUID": {
+                        "value": 2,
+                        "desc": "Ignore suid and sgid bits"
+                    },
+                    "MS_SILENT": {
+                        "value": 32768,
+                        "desc": "Suppress kernel log messages"
+                    },
+                    "MS_MOVE": {
+                        "value": 8192,
+                        "desc": "Move mount subtree"
+                    },
+                    "MS_SYNCHRONOUS": {
+                        "value": 16,
+                        "desc": "Writes are synced immediately"
+                    },
+                    "MS_REC": {
+                        "value": 16384,
+                        "desc": "Recursive mount operation"
+                    },
+                    "MS_NOATIME": {
+                        "value": 1024,
+                        "desc": "Do not update access times"
+                    },
+                    "MS_DIRSYNC": {
+                        "value": 128,
+                        "desc": "Directory updates are synchronous"
+                    },
+                    "MS_BIND": {
+                        "value": 4096,
+                        "desc": "Create a bind mount"
+                    },
+                    "MS_MANDLOCK": {
+                        "value": 64,
+                        "desc": "Allow mandatory locks"
+                    },
                     "MS_ACTIVE": 1073741824,
                     "MS_KERNMOUNT": 4194304,
-                    "MS_LAZYTIME": 33554432,
-                    "MS_SHARED": 1048576,
-                    "MS_RELATIME": 2097152,
-                    "MS_PRIVATE": 262144,
-                    "MS_UNBINDABLE": 131072,
+                    "MS_LAZYTIME": {
+                        "value": 33554432,
+                        "desc": "Update atime/mtime in memory only"
+                    },
+                    "MS_SHARED": {
+                        "value": 1048576,
+                        "desc": "Change to shared mount"
+                    },
+                    "MS_RELATIME": {
+                        "value": 2097152,
+                        "desc": "Update atime relative to mtime/ctime"
+                    },
+                    "MS_PRIVATE": {
+                        "value": 262144,
+                        "desc": "Change to private mount"
+                    },
+                    "MS_UNBINDABLE": {
+                        "value": 131072,
+                        "desc": "Change to unbindable mount"
+                    },
                     "MS_I_VERSION": 8388608,
-                    "MS_STRICTATIME": 16777216,
-                    "MS_SLAVE": 524288,
-                    "MS_POSIXACL": 65536
+                    "MS_STRICTATIME": {
+                        "value": 16777216,
+                        "desc": "Always update atime"
+                    },
+                    "MS_SLAVE": {
+                        "value": 524288,
+                        "desc": "Change to slave mount"
+                    },
+                    "MS_POSIXACL": {
+                        "value": 65536,
+                        "desc": "Support POSIX ACLs"
+                    }
                 }
             },
             "4": {
@@ -3356,9 +5069,18 @@
                 "flags": {
                     "MNT_ID_REQ_SIZE_VER0": 24,
                     "MNT_ID_REQ_SIZE_VER1": 32,
-                    "MNT_DETACH": 2,
-                    "MNT_EXPIRE": 4,
-                    "MNT_FORCE": 1
+                    "MNT_FORCE": {
+                        "value": 1,
+                        "desc": "Force unmount"
+                    },
+                    "MNT_DETACH": {
+                        "value": 2,
+                        "desc": "Lazy unmount (detach immediately)"
+                    },
+                    "MNT_EXPIRE": {
+                        "value": 4,
+                        "desc": "Mark mount as expired"
+                    }
                 }
             }
         }
@@ -3667,9 +5389,18 @@
                 "type": "unsigned int",
                 "param_index": 2,
                 "flags": {
-                    "GRND_INSECURE": 4,
-                    "GRND_NONBLOCK": 1,
-                    "GRND_RANDOM": 2
+                    "GRND_INSECURE": {
+                        "value": 4,
+                        "desc": "Return unseeded data"
+                    },
+                    "GRND_NONBLOCK": {
+                        "value": 1,
+                        "desc": "Non-blocking random read"
+                    },
+                    "GRND_RANDOM": {
+                        "value": 2,
+                        "desc": "Use /dev/random source"
+                    }
                 }
             }
         }
@@ -3703,7 +5434,10 @@
                     "PIDFD_COREDUMP_SKIP": 2,
                     "PIDFD_COREDUMPED": 1,
                     "PIDFD_INFO_COREDUMP_SIGNAL": 64,
-                    "PIDFD_NONBLOCK": 2048,
+                    "PIDFD_NONBLOCK": {
+                        "value": 2048,
+                        "desc": "Non-blocking pidfd"
+                    },
                     "PIDFD_SIGNAL_THREAD": 1,
                     "PIDFD_SELF_PROCESS": -10001,
                     "PIDFD_INFO_PID": 1,
@@ -3729,37 +5463,130 @@
                 "type": "int",
                 "param_index": 1,
                 "signals": {
-                    "SIGBUS": 7,
-                    "SIGTTIN": 21,
-                    "SIGPROF": 27,
-                    "SIGFPE": 8,
-                    "SIGSTKFLT": 16,
-                    "SIGUSR1": 10,
-                    "SIGTTOU": 22,
-                    "SIGURG": 23,
-                    "SIGQUIT": 3,
-                    "SIGABRT": 6,
-                    "SIGUSR2": 12,
-                    "SIGTRAP": 5,
-                    "SIGVTALRM": 26,
-                    "SIGSEGV": 11,
-                    "SIGCONT": 18,
-                    "SIGPIPE": 13,
-                    "SIGWINCH": 28,
-                    "SIGXFSZ": 25,
-                    "SIGCHLD": 17,
-                    "SIGSTOP": 19,
-                    "SIGSYS": 31,
-                    "SIGALRM": 14,
-                    "SIGTSTP": 20,
-                    "SIGKILL": 9,
-                    "SIGXCPU": 24,
-                    "SIGPWR": 30,
-                    "SIGILL": 4,
-                    "SIGINT": 2,
-                    "SIGTERM": 15,
-                    "SIGHUP": 1,
-                    "SIGIO": 29
+                    "SIGBUS": {
+                        "value": 7,
+                        "desc": "Memory bus error"
+                    },
+                    "SIGTTIN": {
+                        "value": 21,
+                        "desc": "Background read from tty"
+                    },
+                    "SIGPROF": {
+                        "value": 27,
+                        "desc": "Profiling timer expired"
+                    },
+                    "SIGFPE": {
+                        "value": 8,
+                        "desc": "Floating point exception"
+                    },
+                    "SIGSTKFLT": {
+                        "value": 16,
+                        "desc": "Stack fault on coprocessor"
+                    },
+                    "SIGUSR1": {
+                        "value": 10,
+                        "desc": "User-defined signal 1"
+                    },
+                    "SIGTTOU": {
+                        "value": 22,
+                        "desc": "Background write to tty"
+                    },
+                    "SIGURG": {
+                        "value": 23,
+                        "desc": "Urgent socket condition"
+                    },
+                    "SIGQUIT": {
+                        "value": 3,
+                        "desc": "Terminal quit (Ctrl+\\)"
+                    },
+                    "SIGABRT": {
+                        "value": 6,
+                        "desc": "Process abort"
+                    },
+                    "SIGUSR2": {
+                        "value": 12,
+                        "desc": "User-defined signal 2"
+                    },
+                    "SIGTRAP": {
+                        "value": 5,
+                        "desc": "Trace/breakpoint trap"
+                    },
+                    "SIGVTALRM": {
+                        "value": 26,
+                        "desc": "Virtual timer expired"
+                    },
+                    "SIGSEGV": {
+                        "value": 11,
+                        "desc": "Segmentation fault"
+                    },
+                    "SIGCONT": {
+                        "value": 18,
+                        "desc": "Continue executing if stopped"
+                    },
+                    "SIGPIPE": {
+                        "value": 13,
+                        "desc": "Broken pipe"
+                    },
+                    "SIGWINCH": {
+                        "value": 28,
+                        "desc": "Window size changed"
+                    },
+                    "SIGXFSZ": {
+                        "value": 25,
+                        "desc": "File size limit exceeded"
+                    },
+                    "SIGCHLD": {
+                        "value": 17,
+                        "desc": "Child process status changed"
+                    },
+                    "SIGSTOP": {
+                        "value": 19,
+                        "desc": "Stop executing (uncatchable)"
+                    },
+                    "SIGSYS": {
+                        "value": 31,
+                        "desc": "Bad system call"
+                    },
+                    "SIGALRM": {
+                        "value": 14,
+                        "desc": "Alarm timer expired"
+                    },
+                    "SIGTSTP": {
+                        "value": 20,
+                        "desc": "Terminal stop signal (Ctrl+Z)"
+                    },
+                    "SIGKILL": {
+                        "value": 9,
+                        "desc": "Kill signal (uncatchable)"
+                    },
+                    "SIGXCPU": {
+                        "value": 24,
+                        "desc": "CPU time limit exceeded"
+                    },
+                    "SIGPWR": {
+                        "value": 30,
+                        "desc": "Power supply failure"
+                    },
+                    "SIGILL": {
+                        "value": 4,
+                        "desc": "Illegal instruction"
+                    },
+                    "SIGINT": {
+                        "value": 2,
+                        "desc": "Terminal interrupt (Ctrl+C)"
+                    },
+                    "SIGTERM": {
+                        "value": 15,
+                        "desc": "Termination signal"
+                    },
+                    "SIGHUP": {
+                        "value": 1,
+                        "desc": "Terminal hangup"
+                    },
+                    "SIGIO": {
+                        "value": 29,
+                        "desc": "I/O now possible"
+                    }
                 }
             },
             "2": {
@@ -3788,7 +5615,10 @@
                     "PIDFD_COREDUMP_SKIP": 2,
                     "PIDFD_COREDUMPED": 1,
                     "PIDFD_INFO_COREDUMP_SIGNAL": 64,
-                    "PIDFD_NONBLOCK": 2048,
+                    "PIDFD_NONBLOCK": {
+                        "value": 2048,
+                        "desc": "Non-blocking pidfd"
+                    },
                     "PIDFD_SIGNAL_THREAD": 1,
                     "PIDFD_SELF_PROCESS": -10001,
                     "PIDFD_INFO_PID": 1,

@@ -6,6 +6,7 @@ Orchestrates header scanning, macro evaluation, routing, and schema assembly.
 import os
 import json
 from .config import DEFAULT_HEADERS, MACRO_BLACKLIST, PREFERRED_NAMES
+from .descriptions import FLAG_DESCRIPTIONS
 from .routing import PREFIX_ROUTING
 from .schemas import get_base_syscall_schemas, FALLBACK_STRUCTS
 from .evaluator import (
@@ -27,10 +28,24 @@ class SyscallDatabaseBuilder:
         self.macro_blacklist = set(MACRO_BLACKLIST)
         self.preferred_names = dict(PREFERRED_NAMES)
         self.prefix_routing = dict(PREFIX_ROUTING)
+        self.flag_descriptions = dict(FLAG_DESCRIPTIONS)
 
         self.raw_macros = {}
         self.constants = {}
         self.structs = {}
+
+    def _enrich_flags(self, flags_dict):
+        """Wraps flag values into objects with descriptions if available."""
+        if not flags_dict:
+            return flags_dict
+        enriched = {}
+        for name, val in flags_dict.items():
+            desc = self.flag_descriptions.get(name)
+            if desc:
+                enriched[name] = {"value": val, "desc": desc}
+            else:
+                enriched[name] = val
+        return enriched
 
     def _extract_all_target_prefixes(self):
         """Extracts all configured macro prefixes across all syscalls and struct fields."""
@@ -82,7 +97,7 @@ class SyscallDatabaseBuilder:
                                     preferred_names=self.preferred_names,
                                 )
                                 if clean_matched:
-                                    arg_meta["flags"] = clean_matched
+                                    arg_meta["flags"] = self._enrich_flags(clean_matched)
                             elif isinstance(routing_spec, dict):
                                 if "flags" in routing_spec:
                                     prefixes = routing_spec["flags"]
@@ -97,7 +112,7 @@ class SyscallDatabaseBuilder:
                                         preferred_names=self.preferred_names,
                                     )
                                     if clean_matched:
-                                        arg_meta["flags"] = clean_matched
+                                        arg_meta["flags"] = self._enrich_flags(clean_matched)
                                 if "signals" in routing_spec:
                                     prefixes = routing_spec["signals"]
                                     matched = {}
@@ -111,7 +126,7 @@ class SyscallDatabaseBuilder:
                                         preferred_names=self.preferred_names,
                                     )
                                     if clean_matched:
-                                        arg_meta["signals"] = clean_matched
+                                        arg_meta["signals"] = self._enrich_flags(clean_matched)
 
         # 2. Process nested struct fields (e.g., clone3 -> clone_args, openat2 -> open_how)
         for sc_name, sc_data in database.items():
@@ -146,7 +161,7 @@ class SyscallDatabaseBuilder:
                                             preferred_names=self.preferred_names,
                                         )
                                         if clean_matched:
-                                            field_entry["flags"] = clean_matched
+                                            field_entry["flags"] = self._enrich_flags(clean_matched)
                                     elif isinstance(f_spec, dict):
                                         if "flags" in f_spec:
                                             matched = {}
@@ -160,7 +175,7 @@ class SyscallDatabaseBuilder:
                                                 preferred_names=self.preferred_names,
                                             )
                                             if clean_matched:
-                                                field_entry["flags"] = clean_matched
+                                                field_entry["flags"] = self._enrich_flags(clean_matched)
                                         if "signals" in f_spec:
                                             matched = {}
                                             for k, v in self.constants.items():
@@ -173,7 +188,7 @@ class SyscallDatabaseBuilder:
                                                 preferred_names=self.preferred_names,
                                             )
                                             if clean_matched:
-                                                field_entry["signals"] = clean_matched
+                                                field_entry["signals"] = self._enrich_flags(clean_matched)
 
                                 struct_fields_dict[str(idx)] = field_entry
 

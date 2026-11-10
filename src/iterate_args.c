@@ -1,7 +1,8 @@
 #include "../include/readsys.h"
 #include <ctype.h>
 
-void iterate_argument_string(RCore *core, RStrBuf *sb, const RJson *db_json,
+void iterate_argument_string(RCore *core, const SyscallConvention *conv,
+                             RStrBuf *sb, const RJson *db_json,
                              const char *name, size_t arg_count,
                              char *arg_str) {
   if (!core || !sb) {
@@ -70,7 +71,7 @@ void iterate_argument_string(RCore *core, RStrBuf *sb, const RJson *db_json,
 
   argument *list_itr = arg_head->args;
   while (list_itr) {
-    argument_detail(core, list_itr);
+    argument_detail(core, conv, list_itr);
 
     int param_idx = (int)(list_itr->pos - 1);
     const char *db_name = get_arg_name_from_db(db_json, name, param_idx);

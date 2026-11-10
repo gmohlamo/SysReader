@@ -33,8 +33,23 @@ const SyscallConvention *get_syscall_convention(RCore *core) {
     return &conv_x86_64;
   }
 
-  const char *arch = r_config_get(core->config, "asm.arch");
-  int bits = (int)r_config_get_i(core->config, "asm.bits");
+  const char *arch = NULL;
+  int bits = 0;
+
+  if (core->bin) {
+    RBinInfo *info = r_bin_get_info(core->bin);
+    if (info) {
+      arch = info->arch;
+      bits = info->bits;
+    }
+  }
+
+  if (!arch || !*arch) {
+    arch = r_config_get(core->config, "asm.arch");
+  }
+  if (bits == 0) {
+    bits = (int)r_config_get_i(core->config, "asm.bits");
+  }
 
   if (!arch || !*arch) {
     arch = "x86";
@@ -54,7 +69,7 @@ const SyscallConvention *get_syscall_convention(RCore *core) {
     return &conv_x86_64;
   }
 
-  // Fallback by probing registers in the active register profile
+  // Fallback by probing registers in the active register profile only if unknown
   if (core->anal && core->anal->reg) {
     if (r_reg_get(core->anal->reg, "x8", -1) != NULL) {
       return &conv_arm64;
@@ -138,12 +153,8 @@ RJson *load_syscall_db(void) {
   return root;
 }
 
-void argument_detail(RCore *core, argument *arg) {
-  if (!core || !core->anal || !core->anal->reg || !arg) {
-    return;
-  }
-  const SyscallConvention *conv = get_syscall_convention(core);
-  if (!conv) {
+void argument_detail(RCore *core, const SyscallConvention *conv, argument *arg) {
+  if (!core || !core->anal || !core->anal->reg || !arg || !conv) {
     return;
   }
   if (arg->pos >= 1 && arg->pos <= SYSCALL_REG_COUNT) {
@@ -212,7 +223,8 @@ char *read_string_from_target(RCore *core, uint64_t addr, size_t max_len) {
   return buffer;
 }
 
-void find_syscall(RCore *core, int callnum, ut64 current_addr, bool add_comment) {
+void find_syscall(RCore *core, const SyscallConvention *conv, int callnum,
+                  ut64 current_addr, bool add_comment) {
   if (!core || !core->anal || !core->anal->syscall) {
     return;
   }
@@ -237,7 +249,7 @@ void find_syscall(RCore *core, int callnum, ut64 current_addr, bool add_comment)
   r_strbuf_appendf(sb, "%s( ", si->name);
 
   RJson *db_json = load_syscall_db();
-  iterate_argument_string(core, sb, db_json, si->name, (size_t)si->args, si->sargs);
+  iterate_argument_string(core, conv, sb, db_json, si->name, (size_t)si->args, si->sargs);
   if (db_json) {
     r_json_free(db_json);
   }
@@ -291,31 +303,25 @@ bool is_syscall(RCorePluginSession *cps, bool add_comment) {
   }
 
   const SyscallConvention *conv = get_syscall_convention(core);
-  RRegItem *item = NULL;
-  if (conv && conv->syscall_reg) {
-    item = r_reg_get(core->anal->reg, conv->syscall_reg, -1);
-    if (!item && conv->alt_syscall_reg) {
-      item = r_reg_get(core->anal->reg, conv->alt_syscall_reg, -1);
-    }
+  if (!conv || !conv->syscall_reg) {
+    r_cons_printf(core->cons, "Error: Unknown architecture calling convention\n");
+    r_anal_op_fini(&op);
+    r_cons_flush(core->cons);
+    return false;
   }
-  if (!item) {
-    item = r_reg_get(core->anal->reg, "rax", -1);
-    if (!item) {
-      item = r_reg_get(core->anal->reg, "eax", -1);
-    }
-    if (!item) {
-      item = r_reg_get(core->anal->reg, "x8", -1);
-    }
-    if (!item) {
-      item = r_reg_get(core->anal->reg, "r7", -1);
-    }
+
+  RRegItem *item = r_reg_get(core->anal->reg, conv->syscall_reg, -1);
+  if (!item && conv->alt_syscall_reg) {
+    item = r_reg_get(core->anal->reg, conv->alt_syscall_reg, -1);
   }
 
   if (item) {
     ut64 syscall_number = r_reg_get_value(core->anal->reg, item);
-    find_syscall(core, (int)syscall_number, current_addr, add_comment);
+    find_syscall(core, conv, (int)syscall_number, current_addr, add_comment);
   } else {
-    r_cons_printf(core->cons, "Could not find syscall number register\n");
+    r_cons_printf(core->cons,
+                  "Could not find syscall register '%s' for arch '%s'\n",
+                  conv->syscall_reg, conv->name);
   }
 
   r_anal_op_fini(&op);

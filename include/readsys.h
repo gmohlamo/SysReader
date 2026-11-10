@@ -52,8 +52,9 @@ typedef struct {
   argument *args;
 } args;
 
-void iterate_argument_string(RCore *core, RStrBuf *sb, const RJson *db_json,
-                             const char *name, size_t arg_count, char *arg_str);
+void iterate_argument_string(RCore *core, const SyscallConvention *conv, RStrBuf *sb,
+                             const RJson *db_json, const char *name,
+                             size_t arg_count, char *arg_str);
 char *remove_newline(const char *str);
 void free_flags(flag_entry *flags);
 void free_args(args *arg_head);
@@ -69,9 +70,10 @@ const char *get_arg_type_from_db(const RJson *root, const char *syscall_name,
 const char *get_flag_description(const char *name);
 void print_flag_details(RStrBuf *sb, uint64_t value, flag_entry *flags,
                         flag_entry *signals);
-void argument_detail(RCore *core, argument *arg);
+void argument_detail(RCore *core, const SyscallConvention *conv, argument *arg);
 char *read_string_from_target(RCore *core, uint64_t addr, size_t max_len);
-void find_syscall(RCore *core, int callnum, ut64 current_addr, bool add_comment);
+void find_syscall(RCore *core, const SyscallConvention *conv, int callnum,
+                  ut64 current_addr, bool add_comment);
 bool is_syscall(RCorePluginSession *cps, bool add_comment);
 bool read_sys_call(RCorePluginSession *cps, const char *input);
 
